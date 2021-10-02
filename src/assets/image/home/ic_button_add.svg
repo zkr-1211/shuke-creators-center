@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #707070;
+        opacity: 0;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="ic_button_add" transform="translate(-1180 -337)">
+    <g id="矩形_1887" data-name="矩形 1887" class="cls-1" transform="translate(1180 337)">
+      <rect class="cls-3" width="20" height="20"/>
+      <rect class="cls-4" x="0.5" y="0.5" width="19" height="19"/>
+    </g>
+    <g id="组_4645" data-name="组 4645" transform="translate(1182 339)">
+      <rect id="矩形_942" data-name="矩形 942" class="cls-2" width="16" height="2" rx="1" transform="translate(0 7)"/>
+      <rect id="矩形_943" data-name="矩形 943" class="cls-2" width="16" height="2" rx="1" transform="translate(9) rotate(90)"/>
+    </g>
+  </g>
+</svg>

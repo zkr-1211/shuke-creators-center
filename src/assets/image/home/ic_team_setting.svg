@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+  <defs>
+    <style>
+      .cls-1, .cls-4, .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-4 {
+        stroke: #707070;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-4 {
+        opacity: 0;
+      }
+
+      .cls-6 {
+        stroke: none;
+      }
+
+      .cls-7 {
+        fill: none;
+      }
+
+      .cls-8 {
+        filter: url(#路径_27460);
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="矩形_1830" data-name="矩形 1830" class="cls-1" width="54" height="54" transform="translate(1.068 1)"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.809" y2="0.893" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5592fe"/>
+      <stop offset="1" stop-color="#2a77ff"/>
+    </linearGradient>
+    <filter id="路径_27460" x="-2" y="-0.999" width="58" height="58" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#5592fe" flood-opacity="0.686"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="ic_team_setting" transform="translate(-1.068 -1)">
+    <g id="蒙版组_37" data-name="蒙版组 37" class="cls-2">
+      <g id="ic_invitation" transform="translate(8.068 8.001)">
+        <g class="cls-8" transform="matrix(1, 0, 0, 1, -7, -7)">
+          <path id="路径_27460-2" data-name="路径 27460" class="cls-3" d="M20,0A20,20,0,1,1,0,20,20,20,0,0,1,20,0Z" transform="translate(7 7)"/>
+        </g>
+        <g id="组_13809" data-name="组 13809" transform="translate(10 9.884)">
+          <g id="矩形_963" data-name="矩形 963" class="cls-4" transform="translate(0 0.116)">
+            <rect class="cls-6" width="20" height="20"/>
+            <rect class="cls-7" x="0.5" y="0.5" width="19" height="19"/>
+          </g>
+          <path id="路径_27459" data-name="路径 27459" class="cls-5" d="M74.509,113.887a3.037,3.037,0,0,1-2.617-.818,2.893,2.893,0,0,1-.833-2.564,2.959,2.959,0,0,1,2.44-2.395,3.034,3.034,0,0,1,2.626.816,2.892,2.892,0,0,1,.831,2.572,2.959,2.959,0,0,1-2.446,2.388M81.527,112l1.41-.863a.6.6,0,0,0,.276-.649l-.69-2.967a.613.613,0,0,0-.536-.468l-1.656-.179a.619.619,0,0,1-.417-.224l-.278-.342a.6.6,0,0,1-.13-.449l.19-1.617a.608.608,0,0,0-.346-.617l-2.8-1.32a.636.636,0,0,0-.709.117l-1.175,1.154a.629.629,0,0,1-.44.179h-.442a.628.628,0,0,1-.44-.179l-1.175-1.154a.628.628,0,0,0-.709-.117l-2.8,1.32a.606.606,0,0,0-.346.617l.19,1.619a.6.6,0,0,1-.13.449l-.276.338a.619.619,0,0,1-.417.224l-1.656.182a.615.615,0,0,0-.536.468l-.692,2.965a.6.6,0,0,0,.276.649l1.41.865a.609.609,0,0,1,.276.38l.1.425a.6.6,0,0,1-.079.459l-.889,1.378a.6.6,0,0,0,.041.7l1.938,2.378a.627.627,0,0,0,.69.194l1.57-.54a.629.629,0,0,1,.474.026l.4.188a.6.6,0,0,1,.316.348l.547,1.538a.622.622,0,0,0,.585.408h3.1a.618.618,0,0,0,.585-.408l.547-1.538a.617.617,0,0,1,.316-.348l.4-.188a.629.629,0,0,1,.474-.026l1.57.54a.626.626,0,0,0,.69-.194l1.938-2.378a.6.6,0,0,0,.041-.7l-.889-1.378a.6.6,0,0,1-.081-.459l.1-.423a.621.621,0,0,1,.28-.382" transform="translate(-63.948 -101.276)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

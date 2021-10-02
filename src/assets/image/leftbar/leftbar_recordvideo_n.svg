@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #a9a9a9;
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5592fe"/>
+      <stop offset="1" stop-color="#2a77ff"/>
+    </linearGradient>
+  </defs>
+  <g id="leftbar_recordvideo_n" transform="translate(-32 -85)">
+    <rect id="矩形_910" data-name="矩形 910" class="cls-1" width="24" height="24" rx="12" transform="translate(32 85)"/>
+    <g id="组_2949" data-name="组 2949" transform="translate(31.768 88.556)">
+      <path id="减去_67" data-name="减去 67" class="cls-2" d="M19152.232,23838.445h-16a1,1,0,0,1-1-1v-14.006a1,1,0,0,1,1-1h16a1,1,0,0,1,1,1v5.289l3.352-2.873a.976.976,0,0,1,.646-.244,1.007,1.007,0,0,1,1,1v7.652a1.007,1.007,0,0,1-1,1,.976.976,0,0,1-.646-.244l-3.352-2.871v5.289A1,1,0,0,1,19152.232,23838.445Zm-12-14a2,2,0,1,0,2,2A2,2,0,0,0,19140.23,23824.445Z" transform="translate(-19135 -23822)"/>
+    </g>
+  </g>
+</svg>
