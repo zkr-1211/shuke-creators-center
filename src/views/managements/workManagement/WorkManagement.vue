@@ -1,5 +1,6 @@
 <template>
   <div class="body">
+    <div id="editor1"></div>
     <div class="content">
       <Navigation :tabList="tabList" />
       <div class="total-dynaic">共30条动态</div>
@@ -36,6 +37,8 @@
 
 <script>
 import Navigation from "@/components/navigation/Navigation.vue";
+import E from "wangeditor";
+
 export default {
   components: {
     Navigation,
@@ -60,13 +63,30 @@ export default {
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    const editor = new E("#editor1");
+    // 配置 server 接口地址
+    // editor.config.uploadImgServer = "/upload-img";
+    // editor.config.uploadImgShowBase64 = true
+    editor.config.customUploadImg = function (resultFiles, insertImgFn) {
+      // resultFiles 是 input 中选中的文件列表
+      // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+      let imgUrl = resultFiles;
+      // 上传图片，返回结果，将图片插入到编辑器中
+      insertImgFn(imgUrl);
+    };
+    editor.create();
+  },
 
   methods: {},
 };
 </script>
 <style lang='scss' scoped>
 .body {
+  #editor1 {
+    font-size: 0.12rem;
+    width: 50%;
+  }
   .content {
     margin-top: 0.2rem;
     padding: 0.12rem 0.6rem 0rem 0.6rem;
@@ -141,7 +161,7 @@ export default {
             margin-left: 0.3rem;
           }
           .topic {
-             margin-left: 0.3rem;
+            margin-left: 0.3rem;
           }
         }
         .bottom-content-right {
