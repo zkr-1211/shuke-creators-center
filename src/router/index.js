@@ -9,44 +9,45 @@ import CommentManagement from '../views/managements/commentManagement/CommentMan
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    children: [{
-      path: '/creations/dynaic',
-      name: 'Dynaic',
-      component: Dynaic
+const routes = [{
+        path: '/creations/dynaic',
+        name: 'Dynaic',
+        component: Dynaic
     },
     {
-      path: '/creations/video',
-      name: 'Video',
-      component: Video
+        path: '/creations/video',
+        name: 'Video',
+        component: Video
     },
     {
-      path: '/creations/zhuanlan',
-      name: 'Zhuanlan',
-      component: Zhuanlan
+        path: '/creations/zhuanlan',
+        name: 'Zhuanlan',
+        component: Zhuanlan
     },
     {
-      path: '/managements/commentmanagement',
-      name: 'CommentManagement',
-      component: CommentManagement
+        path: '/',
+        name: 'Home',
+        component: Home,
+        children: [
+
+            {
+                path: '/managements/commentmanagement',
+                name: 'CommentManagement',
+                component: CommentManagement
+            },
+            {
+                path: '/managements/workmanagement',
+                name: 'WorkManagement',
+                component: WorkManagement
+            },
+        ]
     },
-    {
-      path: '/managements/workmanagement',
-      name: 'WorkManagement',
-      component: WorkManagement
-    },
-    ]
-  },
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

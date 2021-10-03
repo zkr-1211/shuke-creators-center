@@ -1,10 +1,10 @@
 <template>
   <div class="body">
-    <div id="editor1"></div>
+
     <div class="content">
       <Navigation :tabList="tabList" />
       <div class="total-dynaic">共30条动态</div>
-      <div class="content-item" v-for="item in 5">
+      <div class="content-item" v-for="(item,index) in 5" :key="index">
         <div class="time">2020-12-19 23:00</div>
         <div class="title">
           用各式的绘画定格历史难忘的瞬间， 用自己喜爱的音乐向祖国母亲告白；
@@ -14,7 +14,7 @@
         </div>
 
         <div class="img-content">
-          <div v-for="item in 3" class="img-item">
+          <div v-for="(item,index) in 5" :key="index" class="img-item">
             <img src="@/assets/logo.png" alt="" />
           </div>
         </div>
@@ -37,8 +37,6 @@
 
 <script>
 import Navigation from "@/components/navigation/Navigation.vue";
-import E from "wangeditor";
-
 export default {
   components: {
     Navigation,
@@ -63,30 +61,13 @@ export default {
   },
   computed: {},
 
-  mounted() {
-    const editor = new E("#editor1");
-    // 配置 server 接口地址
-    // editor.config.uploadImgServer = "/upload-img";
-    // editor.config.uploadImgShowBase64 = true
-    editor.config.customUploadImg = function (resultFiles, insertImgFn) {
-      // resultFiles 是 input 中选中的文件列表
-      // insertImgFn 是获取图片 url 后，插入到编辑器的方法
-      let imgUrl = resultFiles;
-      // 上传图片，返回结果，将图片插入到编辑器中
-      insertImgFn(imgUrl);
-    };
-    editor.create();
-  },
+  mounted() {},
 
   methods: {},
 };
 </script>
 <style lang='scss' scoped>
 .body {
-  #editor1 {
-    font-size: 0.12rem;
-    width: 50%;
-  }
   .content {
     margin-top: 0.2rem;
     padding: 0.12rem 0.6rem 0rem 0.6rem;

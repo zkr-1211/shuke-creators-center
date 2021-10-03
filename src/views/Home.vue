@@ -1,227 +1,55 @@
 <template>
   <div class="home" id="full-Screen">
+    <Header />
     <el-container>
-      <el-header>
-        <div class="nav_drawer drawer-show" @click="drawer = true">
-          <img src="@/assets/image/home/ic_nav_drawer.svg" alt="" />
-        </div>
-        <div class="shuke-logo">
-          <img src="@/assets/image/home/icon_shuke.svg" alt="" />
-        </div>
-        <div class="right-person">
-          <div class="trigon"></div>
-          <div class="right">
-            <el-dropdown trigger="click" placement="bottom-end">
-              <span class="el-dropdown-link">
-                <div class="header"></div>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <a href="/accountInfomation">
-                  <el-dropdown-item>账户信息</el-dropdown-item>
-                </a>
-
-                <el-dropdown-item>退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <div class="name">张克榕</div>
-            <div class="message">
-              <el-dropdown trigger="click" placement="bottom-end">
-                <span class="el-dropdown-link">
-                  <el-badge :value="12" class="item">
-                    <img
-                      src="@/assets/image/home/topbar_notice.svg"
-                      alt=""
-                      @click="isNoticF()"
-                    />
-                  </el-badge>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <div class="notices">
-                    <div class="time-img">
-                      <a href="/allNotice">
-                        <div class="img1"></div>
-                      </a>
-                    </div>
-                    <el-tabs
-                      value="first"
-                      @tab-click="handleClick"
-                      v-if="isNotic"
-                    >
-                      <el-tab-pane label="用户管理" name="first">
-                        <div class="notice-message">
-                          <div
-                            class="notice"
-                            v-for="(item, index) in 10"
-                            :key="index"
-                          >
-                            <div class="left-item">
-                              <div class="img">
-                                <img
-                                  src="@/assets/image/home/topbar_notice_label.svg"
-                                  alt=""
-                                />
-                              </div>
-                              <div class="info">
-                                陈小平 提醒您修改 课程:UI设计 标设计陈小平
-                                陈小平 提醒您修改 课程:UI设计 标设计陈小平
-                                陈小平 提醒您修改 课程:UI设计 标设计陈小平
-                              </div>
-                            </div>
-
-                            <div class="time">01月21日</div>
-                          </div>
-                        </div>
-                      </el-tab-pane>
-                      <el-tab-pane label="配置管理" name="second">
-                        <div class="notice-message">
-                          <div
-                            class="notice"
-                            v-for="(item, index) in 0"
-                            :key="index"
-                          >
-                            <div class="left-item">
-                              <div class="img">
-                                <img
-                                  src="@/assets/image/home/topbar_notice_label.svg"
-                                  alt=""
-                                />
-                              </div>
-                              <div class="info">
-                                陈小平 提醒您修改 课程:UI设计 标设计 111
-                                提醒您修改 课程:UI设计 标设计
-                              </div>
-                            </div>
-
-                            <div class="time">01月21日</div>
-                          </div>
-                        </div>
-                      </el-tab-pane>
-                    </el-tabs>
-                  </div>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-            <div class="full-screen" @click="fullScreenEvent">
-              <div class="image">
-                <img src="@/assets/image/home/icon_fullscreen_b.svg" alt="" />
-              </div>
-              <div class="text">
-                <span v-if="!isFullScren">全屏模式</span>
-                <span v-else>退出全屏</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </el-header>
       <el-container>
         <el-aside class="hidden-md-and-down">
           <el-row class="tac">
             <el-col>
-              <el-menu
-                router
-                text-color="#666666"
-                :default-active="activePath"
-                class="el-menu-vertical-demo"
-                @select="handleSelect"
-                @open="handleOpen"
-                @close="handleClose"
-              >
-                <el-menu-item
-                  @click="saveNavState('/')"
-                  index="/"
-                  :class="selectIndex == '/' ? 'selectStyle' : ''"
-                >
-                  <img
-                    v-if="selectIndex == '/'"
-                    src="@/assets/image/leftbar/leftbar_home_s.svg"
-                    alt=""
-                  />
-                  <img
-                    v-else
-                    src="@/assets/image/leftbar/leftbar_home_n.svg"
-                    alt=""
-                  />
+              <el-menu router text-color="#666666" :default-active="activePath" class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen" @close="handleClose">
+                <el-menu-item @click="saveNavState('/')" index="/" :class="selectIndex == '/' ? 'selectStyle' : ''">
+                  <img v-if="selectIndex == '/'" src="@/assets/image/leftbar/leftbar_home_s.svg" alt="" />
+                  <img v-else src="@/assets/image/leftbar/leftbar_home_n.svg" alt="" />
                   <!-- <i class="el-icon-menu"></i> -->
                   <span>首页</span>
                 </el-menu-item>
 
                 <el-submenu index="1">
                   <template slot="title">
-                    <img
-                      src="@/assets/image/leftbar/leftbar_course_n.svg"
-                      alt=""
-                    />
+                    <img src="@/assets/image/leftbar/leftbar_course_n.svg" alt="" />
                     <span class="left-title">创作</span>
                     <!-- </el-menu-item> -->
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item
-                      @click="saveNavState('/creations/dynaic')"
-                      index="/creations/dynaic"
-                      class="left-title-item"
-                      :class="
+                    <el-menu-item @click="saveNavState('/creations/dynaic')" index="/creations/dynaic" class="left-title-item" :class="
                         selectIndex == '/creations/dynaic' ? 'checkStyle' : ''
-                      "
-                      >动态</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/creations/video')"
-                      index="/creations/video"
-                      class="left-title-item"
-                      :class="
+                      ">动态</el-menu-item>
+                    <el-menu-item @click="saveNavState('/creations/video')" index="/creations/video" class="left-title-item" :class="
                         selectIndex == '/creations/video' ? 'checkStyle' : ''
-                      "
-                      >视频</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/creations/zhuanlan')"
-                      index="/creations/zhuanlan"
-                      class="left-title-item"
-                      :class="
+                      ">视频</el-menu-item>
+                    <el-menu-item @click="saveNavState('/creations/zhuanlan')" index="/creations/zhuanlan" class="left-title-item" :class="
                         selectIndex == '/creations/zhuanlan' ? 'checkStyle' : ''
-                      "
-                      >专栏</el-menu-item
-                    >
+                      ">专栏</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">
                   <template slot="title">
-                    <img
-                      v-if="selectIndex == '/allequipment'"
-                      src="@/assets/image/leftbar/leftbar_course_s.svg"
-                      alt=""
-                    />
-                    <img
-                      v-else
-                      src="@/assets/image/leftbar/leftbar_course_n.svg"
-                      alt=""
-                    />
+                    <img v-if="selectIndex == '/allequipment'" src="@/assets/image/leftbar/leftbar_course_s.svg" alt="" />
+                    <img v-else src="@/assets/image/leftbar/leftbar_course_n.svg" alt="" />
                     <span class="left-title">管理</span>
                     <!-- </el-menu-item> -->
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item
-                      @click="saveNavState('/managements/commentmanagement')"
-                      index="/managements/commentmanagement"
-                      class="left-title-item"
-                      :class="
-                        selectIndex == '/managements/commentmanagement'
-                          ? 'checkStyle'
-                          : ''
-                      "
-                      >作品管理</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/managements/workmanagement')"
-                      index="/managements/workmanagement"
-                      class="left-title-item"
-                      :class="
+                    <el-menu-item @click="saveNavState('/managements/workmanagement')" index="/managements/workmanagement" class="left-title-item" :class="
                         selectIndex == '/managements/workmanagement'
                           ? 'checkStyle'
                           : ''
-                      "
-                      >评论管理</el-menu-item
-                    >
+                      ">作品管理</el-menu-item>
+                    <el-menu-item @click="saveNavState('/managements/commentmanagement')" index="/managements/commentmanagement" class="left-title-item" :class="
+                        selectIndex == '/managements/commentmanagement'
+                          ? 'checkStyle'
+                          : ''
+                      ">评论管理</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
               </el-menu>
@@ -246,123 +74,54 @@
         </el-main>
       </el-container>
     </el-container>
-    <el-drawer
-      :modal="true"
-      :show-close="false"
-      size="28%"
-      title=""
-      :visible.sync="drawer"
-      :direction="direction"
-    >
-      <el-menu
-                router
-                text-color="#666666"
-                :default-active="activePath"
-                class="el-menu-vertical-demo"
-                @select="handleSelect"
-                @open="handleOpen"
-                @close="handleClose"
-              >
-                <el-menu-item
-                  @click="saveNavState('/')"
-                  index="/"
-                  :class="selectIndex == '/' ? 'selectStyle' : ''"
-                >
-                  <img
-                    v-if="selectIndex == '/'"
-                    src="@/assets/image/leftbar/leftbar_home_s.svg"
-                    alt=""
-                  />
-                  <img
-                    v-else
-                    src="@/assets/image/leftbar/leftbar_home_n.svg"
-                    alt=""
-                  />
-                  <!-- <i class="el-icon-menu"></i> -->
-                  <span class="left-title-d"
-                  >首页</span>
-                </el-menu-item>
+    <el-drawer :modal="true" :show-close="false" size="28%" title="" :visible.sync="drawer" :direction="direction">
+      <el-menu router text-color="#666666" :default-active="activePath" class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen" @close="handleClose">
+        <el-menu-item @click="saveNavState('/')" index="/" :class="selectIndex == '/' ? 'selectStyle' : ''">
+          <img v-if="selectIndex == '/'" src="@/assets/image/leftbar/leftbar_home_s.svg" alt="" />
+          <img v-else src="@/assets/image/leftbar/leftbar_home_n.svg" alt="" />
+          <!-- <i class="el-icon-menu"></i> -->
+          <span class="left-title-d">首页</span>
+        </el-menu-item>
 
-                <el-submenu index="1">
-                  <template slot="title">
-                    <img
-                      src="@/assets/image/leftbar/leftbar_course_n.svg"
-                      alt=""
-                    />
-                    <span class="left-title">创作</span>
-                    <!-- </el-menu-item> -->
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item
-                      @click="saveNavState('/creations/dynaic')"
-                      index="/creations/dynaic"
-                      class="left-title-item"
-                      :class="
+        <el-submenu index="1">
+          <template slot="title">
+            <img src="@/assets/image/leftbar/leftbar_course_n.svg" alt="" />
+            <span class="left-title">创作</span>
+            <!-- </el-menu-item> -->
+          </template>
+          <el-menu-item-group>
+            <el-menu-item @click="saveNavState('/creations/dynaic')" index="/creations/dynaic" class="left-title-item" :class="
                         selectIndex == '/creations/dynaic' ? 'checkStyle' : ''
-                      "
-                      >动态</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/creations/video')"
-                      index="/creations/video"
-                      class="left-title-item"
-                      :class="
+                      ">动态</el-menu-item>
+            <el-menu-item @click="saveNavState('/creations/video')" index="/creations/video" class="left-title-item" :class="
                         selectIndex == '/creations/video' ? 'checkStyle' : ''
-                      "
-                      >视频</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/creations/zhuanlan')"
-                      index="/creations/zhuanlan"
-                      class="left-title-item"
-                      :class="
+                      ">视频</el-menu-item>
+            <el-menu-item @click="saveNavState('/creations/zhuanlan')" index="/creations/zhuanlan" class="left-title-item" :class="
                         selectIndex == '/creations/zhuanlan' ? 'checkStyle' : ''
-                      "
-                      >专栏</el-menu-item
-                    >
-                  </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="2">
-                  <template slot="title">
-                    <img
-                      v-if="selectIndex == '/allequipment'"
-                      src="@/assets/image/leftbar/leftbar_course_s.svg"
-                      alt=""
-                    />
-                    <img
-                      v-else
-                      src="@/assets/image/leftbar/leftbar_course_n.svg"
-                      alt=""
-                    />
-                    <span class="left-title">管理</span>
-                    <!-- </el-menu-item> -->
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item
-                      @click="saveNavState('/managements/commentmanagement')"
-                      index="/managements/commentmanagement"
-                      class="left-title-item"
-                      :class="
-                        selectIndex == '/managements/commentmanagement'
-                          ? 'checkStyle'
-                          : ''
-                      "
-                      >作品管理</el-menu-item
-                    >
-                    <el-menu-item
-                      @click="saveNavState('/managements/workmanagement')"
-                      index="/managements/workmanagement"
-                      class="left-title-item"
-                      :class="
+                      ">专栏</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <img v-if="selectIndex == '/allequipment'" src="@/assets/image/leftbar/leftbar_course_s.svg" alt="" />
+            <img v-else src="@/assets/image/leftbar/leftbar_course_n.svg" alt="" />
+            <span class="left-title">管理</span>
+            <!-- </el-menu-item> -->
+          </template>
+          <el-menu-item-group>
+            <el-menu-item @click="saveNavState('/managements/workmanagement')" index="/managements/workmanagement" class="left-title-item" :class="
                         selectIndex == '/managements/workmanagement'
                           ? 'checkStyle'
                           : ''
-                      "
-                      >评论管理</el-menu-item
-                    >
-                  </el-menu-item-group>
-                </el-submenu>
-              </el-menu>
+                      ">作品管理</el-menu-item>
+            <el-menu-item @click="saveNavState('/managements/commentmanagement')" index="/managements/commentmanagement" class="left-title-item" :class="
+                        selectIndex == '/managements/commentmanagement'
+                          ? 'checkStyle'
+                          : ''
+                      ">评论管理</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+      </el-menu>
       <div class="aside-progress">
         <div>
           <el-progress :percentage="50" :show-text="false"></el-progress>
@@ -383,12 +142,14 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
+import Header from "@/components/header/Header.vue";
 import "element-ui/lib/theme-chalk/display.css";
 
 export default {
   name: "Home",
   components: {
     HelloWorld,
+    Header,
   },
   data() {
     return {
@@ -409,7 +170,6 @@ export default {
     // });
   },
   mounted() {
-    console.log("query", this.$route.query);
     let isFullscreen =
       document.fullscreenElement ||
       document.mozFullScreenElement ||
@@ -565,125 +325,7 @@ export default {
   border-radius: 0.04rem;
   color: #fff !important;
 }
-.el-header {
-  background-color: #ffffff;
-  color: #333;
-  text-align: center;
-  // line-height: 0.6rem;
-  width: 100%;
-  height: 0.64rem !important;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0rem;
-  position: relative;
-  .nav_drawer {
-    position: absolute;
-    left: 0.2rem;
-    bottom: -12px;
-    margin-left: 0.15rem;
-    display: none;
-    cursor: pointer;
-  }
-  // .drawer-show{
-  //   display: block;
-  // }
 
-  @media only screen and (max-width: 1200px) {
-    .drawer-show {
-      display: block;
-    }
-    .shuke-logo {
-      margin-left: 0.9rem !important;
-    }
-  }
-  @media only screen and (max-width: 550px) {
-    .shuke-logo {
-      font-size: 0.12rem !important;
-      padding-right: 0.5rem;
-    }
-  }
-
-  .shuke-logo {
-    margin-left: 0.4rem;
-    display: flex;
-    align-items: center;
-    img {
-      width: 1.76rem;
-      height: 0.36rem;
-    }
-  }
-  .right-person {
-    width: 3.8rem;
-    height: 0.64rem;
-    background-color: #2a77ff;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    .trigon {
-      left: -0.34rem;
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-color: #2a77ff transparent;
-      border-width: 0 0 0.64rem 0.34rem;
-      border-style: solid;
-    }
-    .right {
-      width: 3.6rem;
-      // margin-left: 0.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      .header {
-        background-color: #fff;
-        width: 0.36rem;
-        height: 0.36rem;
-        // background: rgba(0, 0, 0, 0);
-        box-shadow: 0rem 0.03rem 0.06rem rgba(0, 0, 0, 0.16);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        img {
-        }
-      }
-      .message {
-        position: relative;
-        width: 0.6rem;
-        height: 0.64rem;
-        display: flex;
-        align-items: center;
-        img {
-          width: 0.36rem;
-          height: 0.36rem;
-        }
-      }
-      .full-screen {
-        cursor: pointer;
-        margin-left: 0.1rem;
-        display: flex;
-        align-items: center;
-        .image {
-          display: flex;
-          width: 0.34rem;
-          height: 0.34rem;
-        }
-        .text {
-          font-size: 0.16rem;
-          color: #ffffff;
-          margin-left: 0.12rem;
-        }
-      }
-    }
-    .name {
-      font-size: 0.2rem;
-      font-family: Source Han Sans CN;
-      font-weight: bold;
-      color: #ffffff;
-      margin-left: 0.2rem;
-    }
-  }
-}
 .el-aside {
   position: relative;
   background-color: #fff;
