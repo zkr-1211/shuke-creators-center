@@ -1,5 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { getRootDomain } from '@/utils/getRootDomain';
+
+const rootDomain = getRootDomain();
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,21 +15,18 @@ export default new Vuex.Store({
         setToken(state, token) {
             if (token) {
                 state.token = token;
-                localStorage.setItem('token', token)
-                // console.log("token", token)
-                // Vue.$cookies.set(
-                //     `${process.env.VUE_APP_SOURCE}.token`,
-                //     token,
-                //     '7d',
-                //     '/',
-                //     rootDomain
-                // );
+                Vue.$cookies.set(
+                    `${process.env.VUE_APP_SOURCE}.token`,
+                    token,
+                    '7d',
+                    '/',
+                    rootDomain
+                );
+                // localStorage.setItem('token', token);
             }
         },
         clearToken(state) {
-            state.token = '';
-            localStorage.removeItem('token');
-            // clearToken(state);
+            clearToken(state);
         },
         setUserInfo(state, payload) {
             state.userInfo = payload.userInfo;
@@ -36,17 +37,14 @@ export default new Vuex.Store({
     },
     getters: {
         getToken(state) {
-            // console.log("statestatestatestate", state)
             if (!state.token) {
-                const getCookieToken = localStorage.getItem('token')
-                // const getCookieToken = Vue.$cookies.get(
-                //     `${process.env.VUE_APP_SOURCE}.token`
-                // );
+                const getCookieToken = Vue.$cookies.get(
+                    `${process.env.VUE_APP_SOURCE}.token`
+                );
                 if (!getCookieToken) {
                     return null;
                 }
                 state.token = getCookieToken;
-                // state.token = 123456;
             }
             return state.token;
         },
@@ -58,8 +56,8 @@ export default new Vuex.Store({
     modules: {}
 });
 
-// function clearToken(state) {
-//     state.token = '';
-//     localStorage.removeItem('token');
-//     // Vue.$cookies.remove(`${process.env.VUE_APP_SOURCE}.token`, '/', rootDomain);
-// }
+function clearToken(state) {
+    state.token = '';
+    // localStorage.removeItem('token');
+    Vue.$cookies.remove(`${process.env.VUE_APP_SOURCE}.token`, '/', rootDomain);
+}

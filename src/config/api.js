@@ -1,4 +1,4 @@
 export default {
-    systemURL: 'https://apis.shukeapp.net',
+    systemURL: '',
     staticCdn: 'https://static.cdn.shukeapp.net'
 }

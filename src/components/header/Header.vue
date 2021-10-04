@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div class='body'>
+  <div class="body">
     <el-header>
       <div class="nav_drawer drawer-show" @click="drawer = true">
         <img src="@/assets/image/home/ic_nav_drawer.svg" alt="" />
@@ -28,7 +28,11 @@
             <el-dropdown trigger="click" placement="bottom-end">
               <span class="el-dropdown-link">
                 <el-badge :value="12" class="item">
-                  <img src="@/assets/image/home/topbar_notice.svg" alt="" @click="isNoticF()" />
+                  <img
+                    src="@/assets/image/home/topbar_notice.svg"
+                    alt=""
+                    @click="isNoticF()"
+                  />
                 </el-badge>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -38,18 +42,29 @@
                       <div class="img1"></div>
                     </a>
                   </div>
-                  <el-tabs value="first" @tab-click="handleClick" v-if="isNotic">
+                  <el-tabs
+                    value="first"
+                    @tab-click="handleClick"
+                    v-if="isNotic"
+                  >
                     <el-tab-pane label="用户管理" name="first">
                       <div class="notice-message">
-                        <div class="notice" v-for="(item, index) in 10" :key="index">
+                        <div
+                          class="notice"
+                          v-for="(item, index) in 10"
+                          :key="index"
+                        >
                           <div class="left-item">
                             <div class="img">
-                              <img src="@/assets/image/home/topbar_notice_label.svg" alt="" />
+                              <img
+                                src="@/assets/image/home/topbar_notice_label.svg"
+                                alt=""
+                              />
                             </div>
                             <div class="info">
-                              陈小平 提醒您修改 课程:UI设计 标设计陈小平
-                              陈小平 提醒您修改 课程:UI设计 标设计陈小平
-                              陈小平 提醒您修改 课程:UI设计 标设计陈小平
+                              陈小平 提醒您修改 课程:UI设计 标设计陈小平 陈小平
+                              提醒您修改 课程:UI设计 标设计陈小平 陈小平
+                              提醒您修改 课程:UI设计 标设计陈小平
                             </div>
                           </div>
 
@@ -59,10 +74,17 @@
                     </el-tab-pane>
                     <el-tab-pane label="配置管理" name="second">
                       <div class="notice-message">
-                        <div class="notice" v-for="(item, index) in 0" :key="index">
+                        <div
+                          class="notice"
+                          v-for="(item, index) in 0"
+                          :key="index"
+                        >
                           <div class="left-item">
                             <div class="img">
-                              <img src="@/assets/image/home/topbar_notice_label.svg" alt="" />
+                              <img
+                                src="@/assets/image/home/topbar_notice_label.svg"
+                                alt=""
+                              />
                             </div>
                             <div class="info">
                               陈小平 提醒您修改 课程:UI设计 标设计 111
@@ -98,86 +120,21 @@
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      isNotic: false,
+      isFullScren: false,
+    };
   },
   computed: {},
 
   mounted() {
-    let isFullscreen =
-      document.fullscreenElement ||
-      document.mozFullScreenElement ||
-      document.webkitFullscreenElement ||
-      document.fullScreen ||
-      document.mozFullScreen ||
-      document.webkitIsFullScreen;
-    isFullscreen = !!isFullscreen;
-    let that = this;
-    document.addEventListener("fullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("mozfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("webkitfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("msfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
   },
   methods: {
-    // 全屏事件
     fullScreenEvent() {
-      //全屏
-      // let el = document.documentElement;
-      //局部全屏
-      let el = document.getElementById("full-Screen");
-      if (this.isFullScren) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      } else {
-        if (el.requestFullscreen) {
-          el.requestFullscreen();
-        } else if (el.mozRequestFullScreen) {
-          el.mozRequestFullScreen();
-        } else if (el.webkitRequestFullScreen) {
-          el.webkitRequestFullScreen();
-        } else if (el.msRequestFullscreen) {
-          el.msRequestFullscreen();
-        }
-      }
-    },
-    saveNavState(activePath) {
-      window.sessionStorage.setItem("activePath", activePath);
-      this.activePath = activePath;
-    },
-    handleSelect(index) {
-      // console.log("index", index);
-      this.selectIndex = index;
-    },
-    handleOpen(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    //下拉菜单嵌套Tabs第一次下划线不显示的解决办法
-    isNoticF() {
-      setTimeout(() => {
-        this.isNotic = true;
-      }, 10);
-    },
-  },
+      console.log("eee")
+      this.$emit('fullScreenEvent')
+    }
+  }
 };
 </script>
 <style lang='scss' scoped>
@@ -193,7 +150,7 @@ export default {
   justify-content: space-between;
   padding: 0rem;
   position: relative;
-  border-bottom: 0.01rem solid #EFEFEF;
+  border-bottom: 0.01rem solid #efefef;
   .nav_drawer {
     position: absolute;
     left: 0.2rem;

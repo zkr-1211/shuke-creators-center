@@ -1,6 +1,6 @@
 <template>
   <div class="home" id="full-Screen">
-    <Header />
+    <Header @fullScreenEvent='fullScreenEvent'/>
     <el-container>
       <el-container>
         <el-aside class="hidden-md-and-down">
@@ -170,31 +170,11 @@ export default {
     // });
   },
   mounted() {
-    let isFullscreen =
-      document.fullscreenElement ||
-      document.mozFullScreenElement ||
-      document.webkitFullscreenElement ||
-      document.fullScreen ||
-      document.mozFullScreen ||
-      document.webkitIsFullScreen;
-    isFullscreen = !!isFullscreen;
-    let that = this;
-    document.addEventListener("fullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("mozfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("webkitfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
-    document.addEventListener("msfullscreenchange", () => {
-      that.isFullScren = !that.isFullScren;
-    });
   },
   methods: {
     // 全屏事件
-    fullScreenEvent() {
+    fullScreenEvent(e) {
+      console.log("eeeeeeeee",e)
       //全屏
       // let el = document.documentElement;
       //局部全屏

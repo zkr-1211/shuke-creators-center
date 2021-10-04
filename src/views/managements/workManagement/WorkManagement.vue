@@ -1,10 +1,9 @@
 <template>
   <div class="body">
-
     <div class="content">
       <Navigation :tabList="tabList" />
       <div class="total-dynaic">共30条动态</div>
-      <div class="content-item" v-for="(item,index) in 5" :key="index">
+      <div class="content-item" v-for="(item, index) in 5" :key="index">
         <div class="time">2020-12-19 23:00</div>
         <div class="title">
           用各式的绘画定格历史难忘的瞬间， 用自己喜爱的音乐向祖国母亲告白；
@@ -12,12 +11,7 @@
           让中国龙飞向世界，带着民族的自豪与骄傲，
           让那一抹厚重耀眼的“中国红”在海洋深处，在世界之巅！
         </div>
-
-        <div class="img-content">
-          <div v-for="(item,index) in 5" :key="index" class="img-item">
-            <img src="@/assets/logo.png" alt="" />
-          </div>
-        </div>
+        <ImgContent />
         <div class="bottom-content">
           <div class="bottom-content-left">
             <div class="liulan">浏览量123</div>
@@ -37,9 +31,11 @@
 
 <script>
 import Navigation from "@/components/navigation/Navigation.vue";
+import ImgContent from "@/components/imgContent/ImgContent.vue";
 export default {
   components: {
     Navigation,
+    ImgContent
   },
   data() {
     return {
@@ -99,29 +95,7 @@ export default {
         color: #333333;
         margin-bottom: 0.08rem;
       }
-      .img-content::after {
-        content: "";
-        width: 1.6rem;
-      }
-      .img-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        max-width: 4.88rem;
-        .img-item {
-          margin-top: 0.04rem;
-          width: 1.6rem;
-          height: 1.6rem;
-          background: rgb(117, 117, 133);
 
-          border-radius: 0.08rem;
-          img {
-            width: 1.6rem;
-            height: 1.6rem;
-          }
-        }
-      }
       .bottom-content {
         display: flex;
         align-items: center;
