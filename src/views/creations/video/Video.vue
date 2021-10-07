@@ -59,9 +59,9 @@
       <div class="data">
         <div class="scope">发布范围:</div>
         <div class="select">
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="openRange" placeholder="请选择">
             <el-option
-              v-for="item in sendList"
+              v-for="item in scopeList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -74,12 +74,12 @@
       <div class="data">
         <div class="topic">话题选择:</div>
         <div class="select">
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="topicId" placeholder="选择话题" filterable>
             <el-option
-              v-for="item in sendList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in topicList"
+              :key="item.topic_id"
+              :label="item.title"
+              :value="item.topic_id"
             >
             </el-option>
           </el-select>
@@ -96,7 +96,7 @@
     <div class="footer">
       <div class="Buttons">
         <Button class="button1" name="保存至草稿箱" />
-        <Button name="发布" />
+        <Button name="发布" @click.native="issue()" />
       </div>
     </div>
   </div>
@@ -106,6 +106,7 @@
 import Header from "@/components/header/Header.vue";
 import Button from "@/components/button/Button.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
+import { createPosts, getalltopicList } from "@/api/zhuanlan/zhuanlan";
 export default {
   components: { Header, Button, ImgContent },
   data() {
@@ -118,15 +119,56 @@ export default {
         { id: 2, value: "动态", label: "动态", isSelect: false },
         { id: 3, value: "视频", label: "视频", isSelect: false },
       ],
+      scopeList: [
+        { value: "all", label: "公开" },
+        { value: "current", label: "本校区" },
+      ],
       value: "视频",
+      topicList: [],
+      query: {
+        pageNum: 1,
+        pageSize: 100,
+      },
+      openRange: "all",
+      contents: [],
       title: "",
+      topicId: null,
+      imageCoverId:null,
+      videoId:null,
     };
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.getTopicList();
+  },
 
   methods: {
+    async issue() {
+      this.contents = [
+        {
+          type: "img",
+          value: this.imageCoverId,
+        },
+        {
+          type: "video",
+          value: this.videoId,
+        },
+      ];
+      const data = {
+        topicId: this.topicId || 0,
+        title: this.title,
+        contents: this.contents,
+        postsType: 0,
+        openRange: this.openRange,
+      };
+      console.log(data);
+      try {
+        // await createPosts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     sendType(id) {
       this.sendList.forEach((item) => {
         if (item.id === id) {
@@ -137,13 +179,22 @@ export default {
         }
       });
     },
+    async getTopicList() {
+      try {
+        const res = await getalltopicList(this.query);
+        this.topicList = this.topicList.concat(res.list);
+        console.log("this.topicList", this.topicList);
+      } catch (error) {
+        console.log("errorerror", error.message);
+      }
+    },
     change(e) {
       switch (e) {
         case "动态":
           this.$router.push({ path: "/creations/dynaic" });
           return;
         case "专栏":
-          this.$router.push({ path: "/creations/zhuanlan" });
+          this.$router.push({ path: "/creations/zhuan_lan" });
       }
     },
   },

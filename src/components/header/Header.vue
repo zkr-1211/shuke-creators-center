@@ -2,7 +2,7 @@
 <template>
   <div class="body">
     <el-header>
-      <div class="nav_drawer drawer-show" @click="drawer = true">
+      <div class="nav_drawer drawer-show" @click="drawer()">
         <img src="@/assets/image/home/ic_nav_drawer.svg" alt="" />
       </div>
       <div class="shuke-logo">
@@ -130,6 +130,9 @@ export default {
   mounted() {
   },
   methods: {
+    drawer() {
+      this.$parent.drawer = true;
+    },
     fullScreenEvent() {
       console.log("eee")
       this.$emit('fullScreenEvent')

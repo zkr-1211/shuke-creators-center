@@ -6,24 +6,10 @@ import Video from '../views/creations/video/Video.vue'
 import Zhuanlan from '../views/creations/zhuanlan/Zhuanlan.vue'
 import WorkManagement from '../views/managements/workManagement/WorkManagement.vue'
 import CommentManagement from '../views/managements/commentManagement/CommentManagement.vue'
-
+import store from '@/store';
 Vue.use(VueRouter)
 
-const routes = [{
-        path: '/creations/dynaic',
-        name: 'Dynaic',
-        component: Dynaic
-    },
-    {
-        path: '/creations/video',
-        name: 'Video',
-        component: Video
-    },
-    {
-        path: '/creations/zhuanlan',
-        name: 'Zhuanlan',
-        component: Zhuanlan
-    },
+const routes = [
     {
         path: '/',
         name: 'Home',
@@ -42,6 +28,22 @@ const routes = [{
             },
         ]
     },
+    {
+        path: '/creations/dynaic',
+        name: 'Dynaic',
+        component: Dynaic
+    },
+    {
+        path: '/creations/video',
+        name: 'Video',
+        component: Video
+    },
+    {
+        path: '/creations/zhuan_lan',
+        name: 'Zhuanlan',
+        component: Zhuanlan
+    },
+
 ]
 
 const router = new VueRouter({
@@ -49,5 +51,10 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') return next()
+    const token = store.getters.getToken;
+    if(!token) return next('/login')
+    next()
+})
 export default router

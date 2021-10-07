@@ -2,8 +2,12 @@
 <template>
   <div class="body">
     <div class="img-content">
-      <div v-for="(item, index) in 1" :key="index" class="img-item">
-        <img src="@/assets/logo.png" alt="" />
+      <div v-for="(item, index) in imgList" :key="index" class="img-item">
+        <el-image
+          :src="item.value"
+          fit="cover"
+          :preview-src-list="srcList"
+        ></el-image>
       </div>
     </div>
   </div>
@@ -12,12 +16,22 @@
 <script>
 export default {
   components: {},
+  props: {
+    imgList: {
+      type: Array,
+      default: [],
+    },
+  },
   data() {
-    return {};
+    return {
+      srcList:[],
+    };
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.srcList = this.imgList.map(item => item.value);
+  },
 
   methods: {},
 };
@@ -39,7 +53,7 @@ export default {
     height: 1.6rem;
     background: rgb(117, 117, 133);
     border-radius: 0.08rem;
-    img {
+    .el-image {
       width: 1.6rem;
       height: 1.6rem;
     }

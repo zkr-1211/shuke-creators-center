@@ -41,15 +41,15 @@
         <div class="tip">{{ title.length }}/200</div>
       </div>
       <div class="center">
-        <ImgContent />
-        <div class="upload-img"></div>
+        <ImgContent :imgList="imgList" />
+        <div class="upload-img" @click="chooseImages"></div>
       </div>
 
       <div id="text-container" class="text"></div>
       <div class="data">
         <div class="scope">发布范围:</div>
         <div class="select">
-          <el-select v-model="scopeValue" placeholder="请选择">
+          <el-select v-model="openRange" placeholder="请选择">
             <el-option
               v-for="item in scopeList"
               :key="item.value"
@@ -68,12 +68,12 @@
       <div class="data">
         <div class="topic">话题选择:</div>
         <div class="select">
-          <el-select v-model="topicValue" placeholder="请选择">
+          <el-select v-model="topicId" placeholder="选择话题" filterable>
             <el-option
               v-for="item in topicList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.topic_id"
+              :label="item.title"
+              :value="item.topic_id"
             >
             </el-option>
           </el-select>
@@ -93,8 +93,8 @@
 import Header from "@/components/header/Header.vue";
 import Button from "@/components/button/Button.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
-// import axios from "axios"
-import { createPosts } from "@/api/zhuanlan/zhuanlan";
+import { CloudDisk } from "@/utils/CloudDisk";
+import { createPosts, getalltopicList } from "@/api/zhuanlan/zhuanlan";
 export default {
   components: { Header, Button, ImgContent },
   data() {
@@ -108,25 +108,27 @@ export default {
         { id: 3, value: "视频", label: "视频", isSelect: false },
       ],
       scopeList: [
-        { id: 1, value: "本校区", label: "本校区" },
-        { id: 2, value: "公开", label: "公开" },
+        { value: "all", label: "公开" },
+        { value: "current", label: "本校区" },
       ],
-      topicList: [
-        { id: 1, value: "A", label: "A" },
-        { id: 2, value: "B", label: "B" },
-      ],
+      imgList: [],
+      topicList: [],
+      query: {
+        pageNum: 1,
+        pageSize: 100,
+      },
       value: "动态",
-      topicValue: "A",
-      scopeValue: "本校区",
+      openRange: "all",
       contents: [],
       title: "",
       topicId: null,
-      openRanges: "",
     };
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.getTopicList();
+  },
 
   methods: {
     async issue() {
@@ -135,12 +137,25 @@ export default {
         title: this.title,
         contents: this.contents,
         postsType: 0,
-        openRange: "all",
+        openRange: this.openRange,
       };
       try {
         await createPosts(data);
+        this.$message({
+          message: '发布成功',
+          type: 'success'
+        });
+        this.title = "";
       } catch (error) {
-        console.log(error);
+        this.$message.error('发布失败');
+      }
+    },
+    async getTopicList() {
+      try {
+        const res = await getalltopicList(this.query);
+        this.topicList = this.topicList.concat(res.list);
+      } catch (error) {
+        this.$message.error('话题列表请求失败');
       }
     },
     sendType(id) {
@@ -153,13 +168,31 @@ export default {
         }
       });
     },
+    // 上传图片
+    async chooseImages() {
+      try {
+        const res = await CloudDisk.uploadLocalImage({ folderId: 0 });
+        res.map((item) => {
+          this.contents.push({
+            type: "img",
+            value: item.fileId,
+          });
+        });
+      } catch (error) {
+        uni.showToast({
+          title: error.message || error,
+          icon: "none",
+          mask: true,
+        });
+      }
+    },
     change(e) {
       switch (e) {
         case "视频":
           this.$router.push({ path: "/creations/video" });
           return;
         case "专栏":
-          this.$router.push({ path: "/creations/zhuanlan" });
+          this.$router.push({ path: "/creations/zhuan_lan" });
       }
     },
   },
@@ -267,6 +300,7 @@ export default {
       border-bottom: 0.01rem solid #e8e8e8;
     }
     .center {
+      min-height: 1.6rem;
       position: relative;
       .upload-img {
         width: 1.6rem;

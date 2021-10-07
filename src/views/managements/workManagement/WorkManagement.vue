@@ -2,26 +2,27 @@
   <div class="body">
     <div class="content">
       <Navigation :tabList="tabList" />
-      <div class="total-dynaic">共30条动态</div>
-      <div class="content-item" v-for="(item, index) in 5" :key="index">
-        <div class="time">2020-12-19 23:00</div>
+      <div class="total-dynaic">共{{ infos.length }}条动态</div>
+      <div class="content-item" v-for="(item, index) in infos" :key="index">
+        <div class="time">{{ item.created_at }}</div>
         <div class="title">
-          用各式的绘画定格历史难忘的瞬间， 用自己喜爱的音乐向祖国母亲告白；
-          让足迹遍布祖国的山川大海， 以自己热爱的方式记录祖国的繁荣变迁；
-          让中国龙飞向世界，带着民族的自豪与骄傲，
-          让那一抹厚重耀眼的“中国红”在海洋深处，在世界之巅！
+          {{ item.title }}
         </div>
-        <ImgContent />
+        <ImgContent :imgList="item.contents" />
         <div class="bottom-content">
           <div class="bottom-content-left">
-            <div class="liulan">浏览量123</div>
-            <div class="comment">评论123</div>
-            <div class="dianzan">点赞123</div>
-            <div class="topic">话题 # NBA公园 #</div>
+            <div class="liulan">浏览量 {{ item.view_number }}</div>
+            <div class="comment">评论 {{ item.comment_number }}</div>
+            <div class="dianzan">点赞 {{ item.like_number }}</div>
+            <div class="topic" v-if="item.topic_title">
+              话题 # {{ item.topic_title }} #
+            </div>
           </div>
           <div class="bottom-content-right">
             <div class="look-comment">查看评论</div>
-            <div class="delete-work">删除作品</div>
+            <div class="delete-work" @click="deletePost(item.post_id)">
+              删除作品
+            </div>
           </div>
         </div>
       </div>
@@ -32,13 +33,32 @@
 <script>
 import Navigation from "@/components/navigation/Navigation.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
+import {
+  getMyColumnList,
+  getMyNewsList,
+  deletePost,
+} from "@/api/zhuanlan/zhuanlan";
 export default {
   components: {
     Navigation,
-    ImgContent
+    ImgContent,
   },
   data() {
     return {
+      zhuanlanList: [],
+      infos: [],
+      zhuanlanTotalNum: 0,
+      infosTotalNum: 0,
+      query1: {
+        userId: 3956,
+        pageNum: 1,
+        pageSize: 10,
+      },
+      query2: {
+        userId: 3956,
+        pageNum: 1,
+        pageSize: 10,
+      },
       tabList: [
         {
           title: "动态",
@@ -57,9 +77,47 @@ export default {
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.getMyColumnList();
+    this.getMyNewsList();
+  },
 
-  methods: {},
+  methods: {
+    //专栏
+    async getMyColumnList() {
+      const res = await getMyColumnList(this.query1);
+      this.zhuanlanList = this.zhuanlanList.concat(res.list);
+      this.zhuanlanTotalNum = res.paginateInfo.totalNum;
+      console.log("this.zhuanlanList", this.zhuanlanList, res);
+    },
+    //动态
+    async getMyNewsList() {
+      const res = await getMyNewsList(this.query2);
+      this.infos = this.infos.concat(res.list);
+      this.infosTotalNum = res.paginateInfo.totalNum;
+      console.log("this.infos", this.infos, res);
+    },
+    deletePost(post_id) {
+      this.$confirm("此操作将删除该帖子, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          await deletePost(post_id);
+          this.infos.forEach((item, index) => {
+            if (item.post_id === post_id) {
+              this.infos.splice(index, 1);
+            }
+          });
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {});
+    },
+  },
 };
 </script>
 <style lang='scss' scoped>
