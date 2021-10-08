@@ -1,7 +1,7 @@
 <!--  -->
 <template>
-  <div class="body">
-    <Header />
+  <div class="body" id="full-Screen">
+    <Header @fullScreenEvent="fullScreenEvent" />
     <div class="top">
       <div class="left">
         <router-link to="/">
@@ -107,8 +107,10 @@ import Header from "@/components/header/Header.vue";
 import Button from "@/components/button/Button.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
 import { createPosts, getalltopicList } from "@/api/zhuanlan/zhuanlan";
+import { fullScreenMixin } from "@/mixins/mixins";
 export default {
   components: { Header, Button, ImgContent },
+  mixins: [fullScreenMixin],
   data() {
     return {
       selectType: false,
@@ -133,8 +135,8 @@ export default {
       contents: [],
       title: "",
       topicId: null,
-      imageCoverId:null,
-      videoId:null,
+      imageCoverId: null,
+      videoId: null,
     };
   },
   computed: {},
@@ -201,263 +203,5 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.body {
-  .top {
-    width: 100%;
-    height: 0.8rem;
-    background: #fff;
-    box-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.03);
-    line-height: 0.8rem;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    .left {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      position: absolute;
-      left: 20%;
-      top: 0%;
-      font-size: 0.16rem;
-      color: #333333;
-      .back-icon {
-        width: 0.3rem;
-        height: 0.3rem;
-        background-image: url(../../../assets/image/home/ic_back_n.svg) !important;
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-      &:hover .back-icon {
-        background-image: url(../../../assets/image/home/ic_back_h.svg) !important;
-      }
-      &:active .back-icon {
-        background-image: url(../../../assets/image/home/ic_back_p.svg) !important;
-      }
-
-      .back {
-        margin-left: 0.12rem;
-      }
-    }
-    .select-type {
-      font-size: 0.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
-      .select-value {
-        display: flex;
-        align-items: center;
-        div {
-        }
-        img {
-          margin-left: 0.1rem;
-          width: 0.2rem;
-          height: 0.2rem;
-        }
-      }
-      span {
-      }
-      .el-select {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-      }
-    }
-  }
-  #toolbar-container {
-    margin: 0vh auto;
-    font-size: 0.12rem;
-    width: 55%;
-  }
-  .footer {
-    width: 100%;
-    height: 0.64rem;
-    background: #ffffff;
-    position: fixed;
-    bottom: 0;
-    z-index: 9;
-    .Buttons {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-top: 0.1rem;
-      margin-right: 4rem;
-      .button1 {
-        margin-right: 0.3rem;
-      }
-    }
-  }
-  .content {
-    background-color: #ffffff;
-    width: 55%;
-    margin: 0vh auto;
-    padding: 0.6rem 1rem 1.6rem 0.6rem;
-    margin-top: 0.3rem;
-    #text-container {
-      padding-top: 0.1rem;
-      margin: 0vh auto;
-      height: 2vh;
-      font-size: 0.12rem;
-      width: 100%;
-      border-bottom: 0.01rem solid #e8e8e8;
-    }
-    .center {
-      position: relative;
-      .upload-video {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        width: 80%;
-        height: 3.14rem;
-        background: #f6f6f8;
-        border-radius: 0.08rem;
-        margin-bottom: 0.3rem;
-        padding-bottom: 0.6rem;
-        .upload-center-text {
-          text-align: center;
-          .img {
-            img {
-            }
-          }
-          .add-video {
-            font-size: 0.16rem;
-            color: #333333;
-          }
-          .size {
-            margin-top: 0.1rem;
-            font-size: 0.16rem;
-            color: #999999;
-          }
-        }
-      }
-    }
-
-    .text {
-    }
-    .title {
-      margin: 0 auto;
-      font-size: 0.12rem;
-      width: 100%;
-      position: relative;
-      margin-bottom: 0.1rem;
-      textarea {
-        padding: 0.1rem;
-        font-size: 0.18rem;
-        // font-weight: bold;
-        color: #333333;
-        width: 100% !important;
-        // height: 0.3rem;
-        opacity: 1;
-        border: none;
-        border-bottom: 0.01rem solid #e8e8e8;
-        resize: none;
-      }
-      textarea::-webkit-input-placeholder {
-        /* WebKit browsers */
-        /* placeholder颜色  */
-        font-weight: 500;
-        color: #666666;
-        /* placeholder字号  */
-        font-size: 0.18rem;
-      }
-      textarea:-moz-placeholder {
-        /* Mozilla Firefox 4 to 18 */
-        font-weight: 500;
-        color: #666666;
-        font-size: 0.18rem;
-      }
-      textarea::-moz-placeholder {
-        /* Mozilla Firefox 19+ */
-        font-weight: 500;
-        color: #666666;
-        font-size: 0.18rem;
-      }
-      textarea::-ms-input-placeholder {
-        /* Internet Explorer 10+ */
-        font-weight: 500;
-        color: #666666;
-        font-size: 0.18rem;
-      }
-
-      .tip {
-        position: absolute;
-        right: 0;
-        bottom: 0.3rem;
-        font-size: 0.14rem;
-        color: #666666;
-      }
-    }
-    .data1 {
-      margin-top: 0.3rem;
-      font-size: 0.16rem;
-      color: #666666;
-      display: flex;
-      width: 6rem;
-      .dec {
-      }
-
-      .scope {
-      }
-      .select {
-        margin-left: 0.3rem;
-        textarea {
-          font-size: 0.14rem;
-          color: #000000;
-          padding: 0.12rem;
-          height: 1rem !important;
-          width: 20vw;
-          height: 0.44rem;
-          background: #ffffff;
-          border: 0.01rem solid #e0e0e0;
-          border-radius: 0rem;
-          resize: none;
-        }
-        .tip {
-          // text-align: right;
-          margin-top: 0.05rem;
-        }
-      }
-    }
-    .data {
-      margin-top: 0.3rem;
-      width: 3rem;
-      position: relative;
-      font-size: 0.16rem;
-      color: #666666;
-      display: flex;
-      .select {
-        margin-left: 0.3rem;
-      }
-      .cover {
-      }
-      .img {
-        cursor: pointer;
-        margin-left: 0.3rem;
-        width: 1.6rem;
-        height: 1.2rem;
-        background: #f6f6f8;
-        border: 0px solid #c3c3c3;
-        border-radius: 0rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      span {
-        cursor: pointer;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-    }
-    .select {
-      .el-select {
-        width: 1.4rem;
-        height: 0.44rem;
-        background: #ffffff;
-      }
-    }
-  }
-}
+@import "./video.scss";
 </style>

@@ -257,17 +257,16 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 import Header from "@/components/header/Header.vue";
-import "element-ui/lib/theme-chalk/display.css";
-
+import { fullScreenMixin } from "@/mixins/mixins";
 export default {
   name: "Home",
   components: {
     HelloWorld,
     Header,
   },
+  mixins: [fullScreenMixin],
   data() {
     return {
       drawer: false,
@@ -276,48 +275,17 @@ export default {
       activePath: "",
       activeName: "first",
       isNotic: false,
-      isFullScren: false,
+      isFullscreen: true,
     };
   },
   created() {
     this.activePath = window.sessionStorage.getItem("activePath");
     this.selectIndex = this.activePath || "/";
-    // window.addEventListener("resize", () => {
-    //   // console.log("resize");
-    // });
   },
   mounted() {
-    this.selectIndex = this.$route.path
+    this.selectIndex = this.$route.path;
   },
   methods: {
-    // 全屏事件
-    fullScreenEvent(e) {
-      //全屏
-      // let el = document.documentElement;
-      //局部全屏
-      let el = document.getElementById("full-Screen");
-      if (this.isFullScren) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      } else {
-        if (el.requestFullscreen) {
-          el.requestFullscreen();
-        } else if (el.mozRequestFullScreen) {
-          el.mozRequestFullScreen();
-        } else if (el.webkitRequestFullScreen) {
-          el.webkitRequestFullScreen();
-        } else if (el.msRequestFullscreen) {
-          el.msRequestFullscreen();
-        }
-      }
-    },
     saveNavState(activePath) {
       window.sessionStorage.setItem("activePath", activePath);
       this.activePath = activePath;
@@ -332,9 +300,7 @@ export default {
     handleClose(key, keyPath) {
       // console.log(key, keyPath);
     },
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
+
     //下拉菜单嵌套Tabs第一次下划线不显示的解决办法
     isNoticF() {
       setTimeout(() => {
@@ -475,186 +441,5 @@ export default {
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   min-height: 4rem;
-}
-::v-deep .el-badge__content {
-  background-color: #f56c6c;
-  border-radius: 0.1rem;
-  color: #fff;
-  display: inline-block;
-  font-size: 0.12rem;
-  height: 0.18rem;
-  line-height: 0.2rem;
-  padding: 0 0.08rem;
-  text-align: center;
-  white-space: nowrap;
-  border: none;
-}
-::v-deep .el-badge__content.is-fixed {
-  position: absolute;
-  top: 0.05rem;
-  right: 0.13rem;
-  transform: translateY(-50%) translateX(100%);
-}
-.el-dropdown-link {
-  cursor: pointer;
-  // color: #409eff;
-}
-.el-icon-arrow-down {
-  font-size: 0.12rem;
-}
-.demonstration {
-  display: block;
-  color: #8492a6;
-  font-size: 0.14rem;
-  margin-bottom: 0.2rem;
-}
-.el-dropdown-menu {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  padding: 0.1rem 0;
-  margin: 0.05rem 0;
-  background-color: #fff;
-  border: 1px solid #ebeef5;
-  border-radius: 0.04rem;
-  box-shadow: 0rem 0.03rem 0.04rem rgba(0, 0, 0, 0.16);
-  .notices {
-    width: 4.6rem;
-    height: 5.36rem;
-    position: relative;
-    .time-img {
-      &:hover .img1 {
-        background-image: url(../assets/image/home/topbar_notice_history_h.svg) !important;
-      }
-      &:active .img1 {
-        background-image: url(../assets/image/home/topbar_notice_history_p.svg) !important;
-      }
-      .img1 {
-        position: absolute;
-        z-index: 98;
-        right: 0.4rem;
-        top: 0.12rem;
-        width: 0.2rem;
-        height: 0.2rem;
-        display: flex;
-        align-items: center;
-        background-image: url(../assets/image/home/topbar_notice_history_n.svg) !important ;
-        background-repeat: no-repeat;
-        background-size: cover;
-        cursor: pointer;
-      }
-    }
-  }
-}
-.el-tabs {
-  padding-left: 0.3rem;
-}
-::v-deep .el-tabs__nav {
-  white-space: nowrap;
-  position: relative;
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-  float: left;
-  z-index: 2;
-  display: flex;
-}
-::v-deep .el-tabs__header {
-  padding: 0;
-  position: relative;
-  margin: 0;
-}
-::v-deep .el-tabs__nav-wrap::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0rem;
-  background-color: #e4e7ed;
-  z-index: 1;
-}
-::v-deep .el-tabs__active-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 0.04rem;
-  background-color: #5592fe;
-  z-index: 1;
-  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  width: 0.5rem;
-  list-style: none;
-}
-::v-deep .el-tabs__item.is-active {
-  font-size: 0.16rem;
-  color: #5592fe;
-}
-::v-deep .el-tabs__item {
-  padding: 0 0.2rem;
-  height: 0.4rem;
-  box-sizing: border-box;
-  line-height: 0.4rem;
-  display: inline-block;
-  list-style: none;
-  font-size: 0.16rem;
-  color: #666666;
-  position: relative;
-}
-.notice-message {
-  height: 4.95rem;
-  width: 100%;
-  overflow: auto;
-  padding-right: 30px;
-  // padding-left: 30px;
-  // padding-right: 0.3rem;
-  .notice {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 0.7rem;
-    padding: 10px 0px 10px 0px;
-    &:hover {
-      background-color: #e8e8e8;
-    }
-    &:active {
-      background-color: #c2c2c2;
-    }
-    .left-item {
-      display: flex;
-      align-items: center;
-
-      .img {
-        display: flex;
-        align-items: center;
-        width: 0.15rem;
-        height: 0.15rem;
-        // background-color: #2a77ff;
-        img {
-          width: 0.15rem;
-          height: 0.15rem;
-        }
-      }
-      .info {
-        width: 100%;
-        font-size: 0.14rem;
-        color: #333334;
-        padding-left: 0.15rem;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
-      }
-    }
-    .time {
-      min-width: 22%;
-      // padding-right: 0.3rem;
-      font-size: 0.14rem;
-      color: #c3c3c3;
-      text-align: right;
-    }
-  }
 }
 </style>
