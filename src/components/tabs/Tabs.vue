@@ -38,7 +38,6 @@ export default {
 
   methods: {
        handleClick(tab, event) {
-        console.log(tab.index);
         this.$emit('tabsIndex',tab.index)
       }
     //下拉菜单嵌套Tabs第一次下划线不显示的解决办法

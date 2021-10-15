@@ -6,6 +6,7 @@ import Video from '../views/creations/video/Video.vue'
 import Zhuanlan from '../views/creations/zhuanlan/Zhuanlan.vue'
 import WorkManagement from '../views/managements/workManagement/WorkManagement.vue'
 import CommentManagement from '../views/managements/commentManagement/CommentManagement.vue'
+import Detail from '../views/detail/Detail.vue'
 import store from '@/store';
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes = [
         name: 'Zhuanlan',
         component: Zhuanlan
     },
+    {
+        path: '/detail',
+        name: 'Detail',
+        component: Detail
+    },
 
 ]
 
@@ -52,9 +58,9 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login') return next()
+    if (to.path === '/') return next()
     const token = store.getters.getToken;
-    if(!token) return next('/login')
+    if(!token) return next('/')
     next()
 })
 export default router
