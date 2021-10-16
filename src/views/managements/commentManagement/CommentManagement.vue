@@ -2,17 +2,42 @@
   <div class="body">
     <div class="content">
       <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
-      <div class="total-dynaic" v-if="tabIndex == 0">共{{ infos.length }}条动态</div>
-      <div class="total-dynaic" v-if="tabIndex == 1">共{{ zhuanlanList.length }}条专栏</div>
+      <div class="total-dynaic" v-if="tabIndex == 0">
+        共{{ infos.length }}条动态
+      </div>
+      <div class="total-dynaic" v-if="tabIndex == 1">
+        共{{ zhuanlanList.length }}条专栏
+      </div>
       <div class="manmge">
-        <div class="left">
-          <div class="item" v-for="(item,index) in 5" :key="index">
-            <MainContent :list="zhuanlanList" />
-          </div>
-        </div>
-        <div class="right">
-          <CommentContent :list="zhuanlanList" />
-        </div>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="left">
+              <div
+                class="item"
+              >
+                <MainContent
+                  :list="zhuanlanList"
+                  :isManage="true"
+                  v-if="tabIndex == 1"
+                  @seletcItem="seletcItem"
+                  :post_id='post_id'
+                />
+                <MainContent
+                  :list="infos"
+                  :isManage="true"
+                  @seletcItem="seletcItem"
+                  :post_id='post_id'
+                  v-else
+                />
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="right">
+              <CommentContent :list="commentList" />
+            </div>
+          </el-col>
+        </el-row>
       </div>
 
       <!-- <MainContent :list="infos" v-if="tabIndex == 0" />
@@ -30,6 +55,7 @@ import {
   getMyColumnList,
   getMyNewsList,
   deletePost,
+  getLatestCommentList,
 } from "@/api/zhuanlan/zhuanlan";
 export default {
   components: {
@@ -42,9 +68,11 @@ export default {
     return {
       zhuanlanList: [],
       infos: [],
+      commentList:[],
       zhuanlanTotalNum: 0,
       infosTotalNum: 0,
       tabIndex: 0,
+      post_id:null,
       query1: {
         userId: 3956,
         pageNum: 1,
@@ -52,6 +80,11 @@ export default {
       },
       query2: {
         userId: 3956,
+        pageNum: 1,
+        pageSize: 10,
+      },
+      query3: {
+        postId: null,
         pageNum: 1,
         pageSize: 10,
       },
@@ -75,21 +108,31 @@ export default {
   methods: {
     //专栏
     async getMyColumnList() {
-      const res = await getMyColumnList(this.query1);
-      this.zhuanlanList = this.zhuanlanList.concat(res.list);
-      this.zhuanlanTotalNum = res.paginateInfo.totalNum;
-      console.log("this.zhuanlanList", this.zhuanlanList, res);
+      try {
+        const res = await getMyColumnList(this.query1);
+        this.zhuanlanList = this.zhuanlanList.concat(res.list);
+        this.zhuanlanTotalNum = res.paginateInfo.totalNum;
+      } catch (error) {}
     },
     //动态
     async getMyNewsList() {
-      const res = await getMyNewsList(this.query2);
-      this.infos = this.infos.concat(res.list);
-      this.infosTotalNum = res.paginateInfo.totalNum;
-      console.log("this.infos", this.infos, res);
+      try {
+        const res = await getMyNewsList(this.query2);
+        this.infos = this.infos.concat(res.list);
+        this.post_id = this.infos[0].post_id
+        this.infosTotalNum = res.paginateInfo.totalNum;
+      } catch (error) {}
     },
 
     tabsIndex(index) {
       this.tabIndex = index;
+    },
+    async seletcItem(post_id) {
+      try {
+        this.query3.postId = post_id * 1;
+        const res = await getLatestCommentList(this.query3);
+        this.commentList = res.list
+      } catch (error) {}
     },
   },
 };
@@ -97,7 +140,8 @@ export default {
 <style lang='scss' scoped>
 .body {
   .content {
-    max-height: 90vh;
+    // max-height: 92vh;
+    // overflow: auto;
     padding: 0.1rem 0.3rem 0.3rem 0.3rem;
     background-color: #ffffff;
     .total-dynaic {
@@ -107,20 +151,18 @@ export default {
       margin-bottom: 0.3rem;
     }
     .manmge {
-      display: flex;
-      width: 100%;
       overflow: hidden;
       .left {
-        min-width: 8rem;
         height: 70vh;
         overflow: auto;
         overflow-x: hidden;
+        margin-bottom: 0.6rem;
         .item {
         }
       }
       .right {
-        flex: 1;
-        background-color: rgb(102, 86, 86);
+        padding: 0rem 0.2rem 0.2rem 0.2rem;
+        background-color: #ffffff;
       }
     }
   }

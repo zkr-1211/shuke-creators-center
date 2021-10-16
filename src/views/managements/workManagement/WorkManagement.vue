@@ -94,6 +94,7 @@ export default {
   background-color: #ffffff;
   .total-dynaic {
     margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     font-size: 0.14rem;
     color: #999999;
   }

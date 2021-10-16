@@ -1,37 +1,53 @@
 <!--  -->
 <template>
   <div class="body">
-    <template v-for="(item) in list">
+    <template v-for="item in list">
       <!-- 动态 -->
-      <router-link :to="{path:'/detail',query:{post_id:item.post_id}} " :key="item.post_id">
-        <div class="content-item">
-          <div class="time">{{ item.created_at }}</div>
-          <div class="title">
-            {{ item.title }}
-          </div>
-          <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1"/>
-          <ImgContent :imgList="item.contents" :isDynaic="true" v-if="item.posts_type == 0 && item.contents[1].type != 'video'"/>
-          <video controls="controls" :poster="item.contents[0].value" v-else-if="item.posts_type == 0">
+      <div class="content-item" @click="toDetail(item.post_id)">
+        <div
+          :class="item.post_id == post_id1 ? 'bar' : ''"
+          v-if="isManage"
+        ></div>
+        <div class="time" v-if="!isManage">{{ item.created_at }}</div>
+        <div class="title">
+          {{ item.title }}
+        </div>
+        <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1" />
+        <template v-if="item.contents[1]">
+          <ImgContent
+            :imgList="item.contents"
+            :isDynaic="true"
+            v-if="item.posts_type == 0 && item.contents[1].type != 'video'"
+          />
+          <video
+            controls="controls"
+            :poster="item.contents[0].value"
+            v-if="item.contents[1].type == 'video'"
+          >
             <source :src="item.contents[1].value" />
           </video>
-          <div class="bottom-content">
-            <div class="bottom-content-left">
-              <div class="liulan">浏览量 {{ item.view_number }}</div>
-              <div class="comment">评论 {{ item.comment_number }}</div>
-              <div class="dianzan">点赞 {{ item.like_number }}</div>
-              <div class="topic" v-if="item.topic_title">
-                话题 # {{ item.topic_title }} #
-              </div>
+        </template>
+        <div class="bottom-content">
+          <div class="bottom-content-left">
+            <div class="liulan">浏览量 {{ item.view_number }}</div>
+            <div class="comment">评论 {{ item.comment_number }}</div>
+            <div class="dianzan">点赞 {{ item.like_number }}</div>
+            <div class="topic" v-if="item.topic_title">
+              话题 # {{ item.topic_title }} #
             </div>
-            <div class="bottom-content-right">
-              <div class="look-comment">查看评论</div>
-              <div class="delete-work" @click="deletePost(item.post_id)">
-                删除作品
-              </div>
+          </div>
+          <div class="bottom-content-right">
+            <div class="look-comment" v-if="!isManage">查看评论</div>
+            <div
+              class="delete-work"
+              v-if="!isManage"
+              @click="deletePost(item.post_id)"
+            >
+              删除作品
             </div>
           </div>
         </div>
-      </router-link>
+      </div>
       <!-- 专栏 -->
       <!-- <router-link :to="{path:'/detail',query:{post_id:item.post_id}}" :key="item.post_id+1">
         <div class="content-item" v-if="tabIndex == 2">
@@ -71,17 +87,29 @@ export default {
       type: Array,
       default: [],
     },
-    // tabIndex: {
-    //   type: String,
-    //   default: null,
-    // },
+    isManage: {
+      type: Boolean,
+      default: false,
+    },
+    post_id: {
+      type: String,
+      default: null,
+    },
   },
   data() {
-    return {};
+    return {
+      post_id1: null,
+    };
   },
   computed: {},
-
-  mounted() {},
+  watch: {
+    post_id(newVal, old) {
+      this.$emit("seletcItem", newVal);
+      this.post_id1 = newVal
+    },
+  },
+  mounted() {
+  },
 
   methods: {
     deletePost(post_id) {
@@ -104,6 +132,25 @@ export default {
         })
         .catch(() => {});
     },
+    toDetail(post_id) {
+      if (!this.isManage) {
+        this.$router.push({
+          path: "/detail",
+          query: {
+            post_id,
+          },
+        });
+      } else {
+         
+        this.list.map((item) => {
+          if (item.post_id == post_id) {
+            this.post_id1 = item.post_id;
+          }
+        });
+        this.$emit("seletcItem", this.post_id1);
+       
+      }
+    },
   },
 };
 </script>
@@ -119,8 +166,17 @@ export default {
     .content-item {
       background-color: #fafafb;
       padding: 0.2rem;
-      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
       position: relative;
+      .bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0.05rem;
+        height: 100%;
+        background: #2a77ff;
+        z-index: 9;
+      }
       video {
         width: 2.85rem;
         height: 1.6rem;

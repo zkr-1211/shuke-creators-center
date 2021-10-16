@@ -1,62 +1,87 @@
 <!--  -->
 <template>
   <div class="body">
+    <div class="comment-title">评论{{ list.length }}</div>
     <div class="item" v-for="item in list" :key="item.id">
       <div class="person">
-        <div class="header"><img src="" alt="" /></div>
-        <div class="name">张三</div>
+        <div class="header"><img :src="item.avatar" alt="" /></div>
+        <div class="name">{{ item.nickname }}</div>
       </div>
       <div class="item-content">
         <div class="com-content">
-          锵锵！期待已久的Underdog工作室纳新计划来啦，你是否曾迷茫，大学只学了理论基础，而无法应用实际：又是否曾困惑，想要学一门编程语言，而不知从何开始。还是否苦于每日在打游戏的宿舍里，无人和你一同研究专业技术。那这次一定要把握机会，只要你拥有一定的自主学习能力，又迫于想爆发自己的idea，那就快来加入我们吧！
+          {{ item.contents }}
         </div>
         <div class="message">
           <div class="message-left">
             <span @click="receive(item.id)">回复</span>
             <span>·</span>
-            <span>5分钟前</span>
+            <span>{{ item.created_at }}</span>
           </div>
           <div class="message-right">
-            <div class="like">12点赞</div>
+            <div class="like">{{ item.like_number }} 点赞</div>
             <div class="delete">删除</div>
             <div class="report">举报</div>
-            <div class="childerComment" @click="receive(item.id)">获取子评论</div>
+            <div class="childerComment" @click="receive(item.id)">
+              获取子评论
+            </div>
           </div>
         </div>
         <div class="send-comment" v-show="item.id == isReceiveId">
           <div class="textarea">
-            <el-input type="textarea" autosize placeholder="请输入内容" v-model="commentValue">
+            <el-input
+              type="textarea"
+              autosize
+              placeholder="请输入内容"
+              v-model="commentValue"
+            >
             </el-input>
-            <Button name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
+            <Button
+              name="评论"
+              class="Button"
+              :background="commentValue.length ? '#2a77ff' : '#888888'"
+            />
           </div>
         </div>
         <template v-for="item in list">
-          <div class="item item1" :key="item.id" v-show="item.id == isReceiveId">
+          <div
+            class="item item1"
+            :key="item.id"
+            v-show="item.id == isReceiveId"
+          >
             <div class="person">
-              <div class="header"><img src="" alt="" /></div>
-              <div class="name">张三</div>
+              <div class="header"><img :src="item.avatar" alt="" /></div>
+              <div class="name">{{ item.nickname }}</div>
             </div>
             <div class="item-content">
               <div class="com-content">
-                锵锵！期待已久的Underdog工作室纳新计划来啦，你是否曾迷茫，大学只学了理论基础，而无法应用实际：又是否曾困惑，想要学一门编程语言，而不知从何开始。还是否苦于每日在打游戏的宿舍里，无人和你一同研究专业技术。那这次一定要把握机会，只要你拥有一定的自主学习能力，又迫于想爆发自己的idea，那就快来加入我们吧！
+                {{ item.contents }}
               </div>
               <div class="message">
                 <div class="message-left">
                   <span @click="receive(item.id)">回复</span>
                   <span>·</span>
-                  <span>5分钟前</span>
+                  <span>{{ item.created_at }}</span>
                 </div>
                 <div class="message-right">
-                  <div class="like">12点赞</div>
+                  <div class="like">{{ item.like_number }} 点赞</div>
                   <div class="delete">删除</div>
                   <div class="report">举报</div>
                 </div>
               </div>
               <div class="send-comment" v-show="item.id == isReceiveId">
                 <div class="textarea">
-                  <el-input type="textarea" autosize placeholder="请输入内容" v-model="commentValue">
+                  <el-input
+                    type="textarea"
+                    autosize
+                    placeholder="请输入内容"
+                    v-model="commentValue"
+                  >
                   </el-input>
-                  <Button name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
+                  <Button
+                    name="评论"
+                    class="Button"
+                    :background="commentValue.length ? '#2a77ff' : '#888888'"
+                  />
                 </div>
               </div>
             </div>
@@ -101,8 +126,16 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.comment-title {
+  border-top: 0.01rem solid #e8e8e8;
+  font-size: 0.2rem;
+  font-weight: bold;
+  color: #333333;
+  line-height: 0.7rem;
+  height: 0.7rem;
+}
 .item1 {
-  width: 50%;
+  // width: 50%;
   margin-top: 0.14rem;
 }
 .item {
@@ -111,11 +144,14 @@ export default {
     display: flex;
     align-items: center;
     .header {
-      background-color: #2a7fff;
       width: 0.3rem;
       height: 0.3rem;
       border-radius: 50%;
+      overflow: hidden;
       img {
+        display: flex;
+        width: 0.3rem;
+        height: 0.3rem;
       }
     }
     .name {
@@ -175,14 +211,13 @@ export default {
         .report {
           margin-right: 0.2rem;
         }
-        .childerComment{
-
+        .childerComment {
         }
       }
     }
     .send-comment {
       margin-top: 0.3rem;
-      width: 6.52rem;
+      // width: 6.52rem;
       background: #f9f9f9;
       // overflow: hidden;
       display: flex;
@@ -192,6 +227,7 @@ export default {
         flex-direction: column;
         padding: 0.2rem;
         ::v-deep.el-textarea__inner {
+          width: 100% !important;
           border: 0 !important;
           resize: none !important;
           background-color: #f9f9f9 !important;

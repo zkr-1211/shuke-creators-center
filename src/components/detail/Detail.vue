@@ -16,7 +16,7 @@
           <slot/>
       </div>
       <div class="comment">
-        <div class="comment-title">评论{{detail.like_number}}</div>
+        
         <CommentContent @fullScreenEvent="fullScreenEvent" :list='[]'/>
       </div>
     </div>
@@ -99,14 +99,7 @@ export default {
     .comment {
       margin-top: 0.3rem;
       border-top: 1px solid #e8e8e8;
-      .comment-title {
-        font-size: 0.2rem;
-        font-weight: bold;
-        line-height: 0.34rem;
-        color: #333333;
-        height: 0.7rem;
-        line-height: 0.7rem;
-      }
+
     }
   }
 }
