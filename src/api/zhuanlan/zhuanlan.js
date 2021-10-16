@@ -209,7 +209,7 @@ export function unLikePosts(id) {
     });
 }
 //首页详情页
-export function getdetail(postId) {
+export function getDetail(postId) {
     return request({
         url: '/zhuanlan/v1/posts/getDetail/' + postId,
         method: 'GET'

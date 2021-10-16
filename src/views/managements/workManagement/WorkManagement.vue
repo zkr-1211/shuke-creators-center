@@ -1,10 +1,11 @@
 <template>
   <div class="body">
     <div class="content">
-      <Navigation :tabList="tabList" @tabsIndex="tabsIndex"/>
-      <MainContent :list="infos" tabIndex = '0' v-if="tabIndex == 0"/>
-      <MainContent :list="infos" tabIndex = '1' v-else-if="tabIndex == 1"/>
-      <MainContent :list="zhuanlanList" tabIndex = '2' v-else-if="tabIndex == 2"/>
+      <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
+      <div class="total-dynaic" v-if="tabIndex == 0">共{{ infos.length }}条动态</div>
+      <div class="total-dynaic" v-if="tabIndex == 1">共{{ zhuanlanList.length }}条专栏</div>
+      <MainContent :list="infos" v-if="tabIndex == 0" />
+      <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" />
     </div>
   </div>
 </template>
@@ -22,7 +23,7 @@ export default {
   components: {
     Navigation,
     ImgContent,
-    MainContent
+    MainContent,
   },
   data() {
     return {
@@ -30,7 +31,7 @@ export default {
       infos: [],
       zhuanlanTotalNum: 0,
       infosTotalNum: 0,
-      tabIndex:0,
+      tabIndex: 0,
       query1: {
         userId: 3956,
         pageNum: 1,
@@ -45,9 +46,9 @@ export default {
         {
           title: "动态",
         },
-        {
-          title: "视频",
-        },
+        // {
+        //   title: "视频",
+        // },
         {
           title: "专栏",
         },
@@ -79,13 +80,22 @@ export default {
       this.infosTotalNum = res.paginateInfo.totalNum;
       console.log("this.infos", this.infos, res);
     },
- 
+
     tabsIndex(index) {
-      this.tabIndex = index
-    }
+      this.tabIndex = index;
+    },
   },
 };
 </script>
 <style lang='scss' scoped>
-
+.content {
+  min-height: 90vh;
+  padding: 0.1rem 0.3rem 0.3rem 0.3rem;
+  background-color: #ffffff;
+  .total-dynaic {
+    margin-top: 0.3rem;
+    font-size: 0.14rem;
+    color: #999999;
+  }
+}
 </style>

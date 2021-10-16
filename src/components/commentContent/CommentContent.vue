@@ -20,31 +20,48 @@
             <div class="like">12点赞</div>
             <div class="delete">删除</div>
             <div class="report">举报</div>
+            <div class="childerComment" @click="receive(item.id)">获取子评论</div>
           </div>
         </div>
         <div class="send-comment" v-show="item.id == isReceiveId">
           <div class="textarea">
-            <el-input
-              type="textarea"
-              autosize
-              placeholder="请输入内容"
-              v-model="commentValue"
-            >
+            <el-input type="textarea" autosize placeholder="请输入内容" v-model="commentValue">
             </el-input>
-            <!-- <textarea
-              name=""
-              id=""
-              v-model="commentValue"
-              placeholder="说点什么吧"
-            ></textarea> -->
-            <Button
-              name="评论"
-              class="Button"
-              :background="commentValue.length ? '#2a77ff' : '#888888'"
-            />
+            <Button name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
           </div>
         </div>
-        <CommentContent />
+        <template v-for="item in list">
+          <div class="item item1" :key="item.id" v-show="item.id == isReceiveId">
+            <div class="person">
+              <div class="header"><img src="" alt="" /></div>
+              <div class="name">张三</div>
+            </div>
+            <div class="item-content">
+              <div class="com-content">
+                锵锵！期待已久的Underdog工作室纳新计划来啦，你是否曾迷茫，大学只学了理论基础，而无法应用实际：又是否曾困惑，想要学一门编程语言，而不知从何开始。还是否苦于每日在打游戏的宿舍里，无人和你一同研究专业技术。那这次一定要把握机会，只要你拥有一定的自主学习能力，又迫于想爆发自己的idea，那就快来加入我们吧！
+              </div>
+              <div class="message">
+                <div class="message-left">
+                  <span @click="receive(item.id)">回复</span>
+                  <span>·</span>
+                  <span>5分钟前</span>
+                </div>
+                <div class="message-right">
+                  <div class="like">12点赞</div>
+                  <div class="delete">删除</div>
+                  <div class="report">举报</div>
+                </div>
+              </div>
+              <div class="send-comment" v-show="item.id == isReceiveId">
+                <div class="textarea">
+                  <el-input type="textarea" autosize placeholder="请输入内容" v-model="commentValue">
+                  </el-input>
+                  <Button name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -52,26 +69,14 @@
 
 <script>
 import Button from "@/components/button/Button.vue";
-import CommentContent from "@/components/commentContent/CommentContent.vue";
 export default {
   components: {
     Button,
-    CommentContent,
   },
   props: {
     list: {
       type: Array,
-      default: [
-        {
-          id: 0,
-        },
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-      ],
+      default: [],
     },
   },
   data() {
@@ -96,13 +101,17 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.item1 {
+  width: 50%;
+  margin-top: 0.14rem;
+}
 .item {
   margin-bottom: 0.3rem;
   .person {
     display: flex;
     align-items: center;
     .header {
-      background-color: red;
+      background-color: #2a7fff;
       width: 0.3rem;
       height: 0.3rem;
       border-radius: 50%;
@@ -164,6 +173,10 @@ export default {
           margin-right: 0.2rem;
         }
         .report {
+          margin-right: 0.2rem;
+        }
+        .childerComment{
+
         }
       }
     }

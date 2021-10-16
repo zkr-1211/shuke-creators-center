@@ -79,7 +79,6 @@ export default {
   methods: {
     tabsIndex(index) {
       this.$emit("tabsIndex", index);
-      console.log("this.tabIndex", index, this.$parent.$parent);
     },
   },
 };

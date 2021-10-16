@@ -132,7 +132,7 @@
           </div>
         </el-aside>
         <el-main>
-          <keep-alive>
+          <keep-alive exclude="Detail">
             <router-view />
           </keep-alive>
         </el-main>

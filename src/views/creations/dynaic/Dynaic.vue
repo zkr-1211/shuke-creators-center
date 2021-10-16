@@ -17,12 +17,7 @@
           <img src="@/assets/image/home/ic_back_h.svg" alt="" />
         </div>
         <el-select v-model="value" placeholder="请选择" @change="change">
-          <el-option
-            v-for="item in sendList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
+          <el-option v-for="item in sendList" :key="item.value" :label="item.label" :value="item.value">
             <span>{{ item.value }}</span>
           </el-option>
         </el-select>
@@ -31,13 +26,7 @@
     <!-- <div id="toolbar-container" class="toolbar"></div> -->
     <div class="content">
       <div class="title">
-        <textarea
-          maxlength="200"
-          v-model="title"
-          placeholder="请输入正文"
-          cols="30"
-          rows="10"
-        ></textarea>
+        <textarea maxlength="200" v-model="title" placeholder="请输入正文" cols="30" rows="10"></textarea>
         <div class="tip">{{ title.length }}/200</div>
       </div>
       <div class="center">
@@ -50,12 +39,7 @@
         <div class="scope">发布范围:</div>
         <div class="select">
           <el-select v-model="openRange" placeholder="请选择">
-            <el-option
-              v-for="item in scopeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+            <el-option v-for="item in scopeList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </div>
@@ -69,12 +53,7 @@
         <div class="topic">话题选择:</div>
         <div class="select">
           <el-select v-model="topicId" placeholder="选择话题" filterable>
-            <el-option
-              v-for="item in topicList"
-              :key="item.topic_id"
-              :label="item.title"
-              :value="item.topic_id"
-            >
+            <el-option v-for="item in topicList" :key="item.topic_id" :label="item.title" :value="item.topic_id">
             </el-option>
           </el-select>
         </div>
@@ -201,5 +180,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+
 @import "./dynaic.scss";
 </style>

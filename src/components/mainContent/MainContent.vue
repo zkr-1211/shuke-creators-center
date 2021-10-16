@@ -1,96 +1,63 @@
 <!--  -->
 <template>
   <div class="body">
-    <div class="total-dynaic">共{{ list.length }}条动态</div>
-    <template v-for="(item, index) in list">
+    <template v-for="(item) in list">
       <!-- 动态 -->
-      <router-link to="/detail">
-      <div
-        class="content-item"
-        :key="index"
-        v-if="item.contents[1].type != 'video' && tabIndex == 0"
-      >
-        <div class="time">{{ item.created_at }}</div>
-        <div class="title">
-          {{ item.title }}
-        </div>
-        <ImgContent :imgList="item.contents" :isDynaic="true" />
-        <div class="bottom-content">
-          <div class="bottom-content-left">
-            <div class="liulan">浏览量 {{ item.view_number }}</div>
-            <div class="comment">评论 {{ item.comment_number }}</div>
-            <div class="dianzan">点赞 {{ item.like_number }}</div>
-            <div class="topic" v-if="item.topic_title">
-              话题 # {{ item.topic_title }} #
+      <router-link :to="{path:'/detail',query:{post_id:item.post_id}} " :key="item.post_id">
+        <div class="content-item">
+          <div class="time">{{ item.created_at }}</div>
+          <div class="title">
+            {{ item.title }}
+          </div>
+          <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1"/>
+          <ImgContent :imgList="item.contents" :isDynaic="true" v-if="item.posts_type == 0 && item.contents[1].type != 'video'"/>
+          <video controls="controls" :poster="item.contents[0].value" v-else-if="item.posts_type == 0">
+            <source :src="item.contents[1].value" />
+          </video>
+          <div class="bottom-content">
+            <div class="bottom-content-left">
+              <div class="liulan">浏览量 {{ item.view_number }}</div>
+              <div class="comment">评论 {{ item.comment_number }}</div>
+              <div class="dianzan">点赞 {{ item.like_number }}</div>
+              <div class="topic" v-if="item.topic_title">
+                话题 # {{ item.topic_title }} #
+              </div>
+            </div>
+            <div class="bottom-content-right">
+              <div class="look-comment">查看评论</div>
+              <div class="delete-work" @click="deletePost(item.post_id)">
+                删除作品
+              </div>
             </div>
           </div>
-          <div class="bottom-content-right">
-            <div class="look-comment">查看评论</div>
-            <div class="delete-work" @click="deletePost(item.post_id)">
-              删除作品
-            </div>
-          </div>
         </div>
-      </div>
       </router-link>
-      <!-- 视频 -->
-      <div
-        class="content-item"
-        :key="index"
-        v-if="item.contents[1].type == 'video' && tabIndex == 1"
-      >
-        <div class="time">{{ item.created_at }}</div>
-        <div class="title">
-          {{ item.title }}
-        </div>
-        <video
-          controls="controls"
-          :poster="item.contents[0].value"
-          v-if="item.posts_type == 0 && item.contents[1].type == 'video'"
-        >
-          <source :src="item.contents[1].value" />
-        </video>
-        <div class="bottom-content">
-          <div class="bottom-content-left">
-            <div class="liulan">浏览量 {{ item.view_number }}</div>
-            <div class="comment">评论 {{ item.comment_number }}</div>
-            <div class="dianzan">点赞 {{ item.like_number }}</div>
-            <div class="topic" v-if="item.topic_title">
-              话题 # {{ item.topic_title }} #
-            </div>
-          </div>
-          <div class="bottom-content-right">
-            <div class="look-comment">查看评论</div>
-            <div class="delete-work" @click="deletePost(item.post_id)">
-              删除作品
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- 专栏 -->
-      <div class="content-item" :key="index" v-if="tabIndex == 2">
-        <div class="time">{{ item.created_at }}</div>
-        <div class="title">
-          {{ item.title }}
-        </div>
-        <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1" />
-        <div class="bottom-content">
-          <div class="bottom-content-left">
-            <div class="liulan">浏览量 {{ item.view_number }}</div>
-            <div class="comment">评论 {{ item.comment_number }}</div>
-            <div class="dianzan">点赞 {{ item.like_number }}</div>
-            <div class="topic" v-if="item.topic_title">
-              话题 # {{ item.topic_title }} #
+      <!-- <router-link :to="{path:'/detail',query:{post_id:item.post_id}}" :key="item.post_id+1">
+        <div class="content-item" v-if="tabIndex == 2">
+          <div class="time">{{ item.created_at }}</div>
+          <div class="title">
+            {{ item.title }}
+          </div>
+          <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1" />
+          <div class="bottom-content">
+            <div class="bottom-content-left">
+              <div class="liulan">浏览量 {{ item.view_number }}</div>
+              <div class="comment">评论 {{ item.comment_number }}</div>
+              <div class="dianzan">点赞 {{ item.like_number }}</div>
+              <div class="topic" v-if="item.topic_title">
+                话题 # {{ item.topic_title }} #
+              </div>
+            </div>
+            <div class="bottom-content-right">
+              <div class="look-comment">查看评论</div>
+              <div class="delete-work" @click="deletePost(item.post_id)">
+                删除作品
+              </div>
             </div>
           </div>
-          <div class="bottom-content-right">
-            <div class="look-comment">查看评论</div>
-            <div class="delete-work" @click="deletePost(item.post_id)">
-              删除作品
-            </div>
-          </div>
         </div>
-      </div>
+      </router-link> -->
     </template>
   </div>
 </template>
@@ -104,10 +71,10 @@ export default {
       type: Array,
       default: [],
     },
-    tabIndex: {
-      type: String,
-      default: 0,
-    },
+    // tabIndex: {
+    //   type: String,
+    //   default: null,
+    // },
   },
   data() {
     return {};
@@ -148,19 +115,13 @@ export default {
     width: 100%;
     height: 100vh;
     background: #ffffff;
-    opacity: 1;
-    border-radius: 8px;
-    .total-dynaic {
-      margin-top: 0.3rem;
-      font-size: 0.14rem;
-      color: #999999;
-    }
+    border-radius: 0.08rem;
     .content-item {
-      padding: 0.16rem 0.24rem 0.16rem 0.24rem;
+      background-color: #fafafb;
+      padding: 0.2rem;
       margin-top: 0.2rem;
-      background: #fafafb;
       position: relative;
-      video{
+      video {
         width: 2.85rem;
         height: 1.6rem;
       }
