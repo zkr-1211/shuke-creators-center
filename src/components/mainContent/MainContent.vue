@@ -8,7 +8,12 @@
           :class="item.post_id == post_id1 ? 'bar' : ''"
           v-if="isManage"
         ></div>
-        <div class="time" v-if="!isManage">{{ item.created_at }}</div>
+        <div class="time" v-if="!isManage">
+          <span v-if="item.created_at">
+            <TimeDiff :date="item.created_at" />
+            {{ item.created_at.substr(11, 5) }}
+          </span>
+        </div>
         <div class="title">
           {{ item.title }}
         </div>
@@ -37,17 +42,18 @@
             </div>
           </div>
           <div class="bottom-content-right">
-            <div class="look-comment" v-if="!isManage">查看评论</div>
+            <div class="look-comment" v-if="!isManage" @click.stop="toComment(item.post_id)">查看评论</div>
             <div
               class="delete-work"
               v-if="!isManage"
-              @click="deletePost(item.post_id)"
+              @click.stop="deletePost(item.post_id)"
             >
               删除作品
             </div>
           </div>
         </div>
       </div>
+     
       <!-- 专栏 -->
       <!-- <router-link :to="{path:'/detail',query:{post_id:item.post_id}}" :key="item.post_id+1">
         <div class="content-item" v-if="tabIndex == 2">
@@ -80,8 +86,9 @@
 
 <script>
 import ImgContent from "@/components/imgContent/ImgContent.vue";
+import TimeDiff from "@/components/timeDiff/TimeDiff.vue";
 export default {
-  components: { ImgContent },
+  components: { ImgContent, TimeDiff },
   props: {
     list: {
       type: Array,
@@ -105,11 +112,10 @@ export default {
   watch: {
     post_id(newVal, old) {
       this.$emit("seletcItem", newVal);
-      this.post_id1 = newVal
+      this.post_id1 = newVal;
     },
   },
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     deletePost(post_id) {
@@ -132,6 +138,15 @@ export default {
         })
         .catch(() => {});
     },
+    toComment(post_id) {
+      this.$router.push({
+          path: "/detail",
+          query: {
+            post_id,
+            isToComment:true
+          },
+        });
+    },
     toDetail(post_id) {
       if (!this.isManage) {
         this.$router.push({
@@ -141,14 +156,12 @@ export default {
           },
         });
       } else {
-         
         this.list.map((item) => {
           if (item.post_id == post_id) {
             this.post_id1 = item.post_id;
           }
         });
         this.$emit("seletcItem", this.post_id1);
-       
       }
     },
   },

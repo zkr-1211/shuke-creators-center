@@ -25,6 +25,11 @@ body {
     box-sizing: border-box !important;
     -webkit-box-sizing: border-box !important;
     background-color: #f6f6f8;
+
+}
+/* el- */
+.el-dialog__header{
+    line-height: 0rem;
 }
 
 

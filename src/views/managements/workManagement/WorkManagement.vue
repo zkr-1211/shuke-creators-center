@@ -2,10 +2,17 @@
   <div class="body">
     <div class="content">
       <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
-      <div class="total-dynaic" v-if="tabIndex == 0">共{{ infos.length }}条动态</div>
-      <div class="total-dynaic" v-if="tabIndex == 1">共{{ zhuanlanList.length }}条专栏</div>
-      <MainContent :list="infos" v-if="tabIndex == 0" />
-      <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" />
+      <el-skeleton :rows="6" animated v-if="isLoading" />
+      <template v-else>
+        <div class="total-dynaic" v-if="tabIndex == 0">
+          共{{ infos.length }}条动态
+        </div>
+        <div class="total-dynaic" v-if="tabIndex == 1">
+          共{{ zhuanlanList.length }}条专栏
+        </div>
+        <MainContent :list="infos" v-if="tabIndex == 0" />
+        <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" />
+      </template>
     </div>
   </div>
 </template>
@@ -42,6 +49,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      isLoading: false,
       tabList: [
         {
           title: "动态",
@@ -68,17 +76,23 @@ export default {
   methods: {
     //专栏
     async getMyColumnList() {
-      const res = await getMyColumnList(this.query1);
-      this.zhuanlanList = this.zhuanlanList.concat(res.list);
-      this.zhuanlanTotalNum = res.paginateInfo.totalNum;
-      console.log("this.zhuanlanList", this.zhuanlanList, res);
+      try {
+        this.isLoading = true;
+        const res = await getMyColumnList(this.query1);
+        this.zhuanlanList = this.zhuanlanList.concat(res.list);
+        this.zhuanlanTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
+      } catch (error) {}
     },
     //动态
     async getMyNewsList() {
-      const res = await getMyNewsList(this.query2);
-      this.infos = this.infos.concat(res.list);
-      this.infosTotalNum = res.paginateInfo.totalNum;
-      console.log("this.infos", this.infos, res);
+      try {
+        this.isLoading = true;
+        const res = await getMyNewsList(this.query2);
+        this.infos = this.infos.concat(res.list);
+        this.infosTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
+      } catch (error) {}
     },
 
     tabsIndex(index) {

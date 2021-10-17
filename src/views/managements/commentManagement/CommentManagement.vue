@@ -2,44 +2,51 @@
   <div class="body">
     <div class="content">
       <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
-      <div class="total-dynaic" v-if="tabIndex == 0">
-        共{{ infos.length }}条动态
-      </div>
-      <div class="total-dynaic" v-if="tabIndex == 1">
-        共{{ zhuanlanList.length }}条专栏
-      </div>
-      <div class="manmge">
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-            <div class="left">
-              <div
-                class="item"
-              >
-                <MainContent
-                  :list="zhuanlanList"
-                  :isManage="true"
-                  v-if="tabIndex == 1"
+      <el-skeleton :rows="6" animated v-if="isLoading" />
+      <template v-else>
+        <div class="total-dynaic" v-if="tabIndex == 0">
+          共{{ infos.length }}条动态
+        </div>
+        <div class="total-dynaic" v-if="tabIndex == 1">
+          共{{ zhuanlanList.length }}条专栏
+        </div>
+        <div class="manmge">
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+              <div class="left">
+                <div class="item">
+                  <MainContent
+                    :list="zhuanlanList"
+                    :isManage="true"
+                    v-if="tabIndex == 1"
+                    @seletcItem="seletcItem"
+                    :post_id="post_id"
+                  />
+                  <MainContent
+                    :list="infos"
+                    :isManage="true"
+                    @seletcItem="seletcItem"
+                    :post_id="post_id"
+                    v-else
+                  />
+                </div>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+              <div class="right">
+                <CommentContent
+                  :list="commentList"
+                  :post_id="post_id"
                   @seletcItem="seletcItem"
-                  :post_id='post_id'
-                />
-                <MainContent
-                  :list="infos"
-                  :isManage="true"
-                  @seletcItem="seletcItem"
-                  :post_id='post_id'
-                  v-else
                 />
               </div>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-            <div class="right">
-              <CommentContent :list="commentList" />
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-
+            </el-col>
+          </el-row>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
       <!-- <MainContent :list="infos" v-if="tabIndex == 0" />
       <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" /> -->
     </div>
@@ -68,11 +75,12 @@ export default {
     return {
       zhuanlanList: [],
       infos: [],
-      commentList:[],
+      commentList: [],
       zhuanlanTotalNum: 0,
       infosTotalNum: 0,
       tabIndex: 0,
-      post_id:null,
+      post_id: null,
+      isLoading: false,
       query1: {
         userId: 3956,
         pageNum: 1,
@@ -109,18 +117,22 @@ export default {
     //专栏
     async getMyColumnList() {
       try {
+        this.isLoading = true;
         const res = await getMyColumnList(this.query1);
         this.zhuanlanList = this.zhuanlanList.concat(res.list);
         this.zhuanlanTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
       } catch (error) {}
     },
     //动态
     async getMyNewsList() {
       try {
+        this.isLoading = true;
         const res = await getMyNewsList(this.query2);
         this.infos = this.infos.concat(res.list);
-        this.post_id = this.infos[0].post_id
+        this.post_id = this.infos[0].post_id;
         this.infosTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
       } catch (error) {}
     },
 
@@ -129,9 +141,12 @@ export default {
     },
     async seletcItem(post_id) {
       try {
+        // this.isLoading = true;
         this.query3.postId = post_id * 1;
         const res = await getLatestCommentList(this.query3);
-        this.commentList = res.list
+        this.commentList = res.list;
+        // this.isLoading = false;
+        console.log("res", res.list);
       } catch (error) {}
     },
   },

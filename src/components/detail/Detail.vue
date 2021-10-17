@@ -2,22 +2,35 @@
 <template>
   <div class="body">
     <Header @fullScreenEvent="fullScreenEvent" class="Header" />
+
     <div class="main">
-     <LeftBar :data="{comment_number:detail.comment_number,like_number:detail.like_number}"/>
-      <div class="title">{{detail.title}}</div>
-      <div class="des">
-        <div class="time-name">
-          <span>{{detail.created_at}} · {{detail.nickname}}</span>
-          <span v-if="detail.topic_title">话题#{{detail.topic_title}}#</span>
+      <el-skeleton :rows="6" animated v-if="isLoading" />
+      <template v-else>
+        <LeftBar :data="detail" @toComment="goComment('#comment')" />
+        <div class="title">{{ detail.title }}</div>
+        <div class="des">
+          <div class="time-name">
+            <span>
+              {{ detail.created_at.substr(5, 11) }} ·
+              {{ detail.nickname }}</span
+            >
+            <span v-if="detail.topic_title"
+              >话题#{{ detail.topic_title }}#</span
+            >
+          </div>
+          <div class="view-number">浏览量{{ detail.view_number }}</div>
         </div>
-        <div class="view-number">浏览量{{detail.view_number}}</div>
-      </div>
-      <div class="content">
-          <slot/>
-      </div>
-      <div class="comment">
-        
-        <CommentContent @fullScreenEvent="fullScreenEvent" :list='[]'/>
+        <div class="content">
+          <slot />
+        </div>
+      </template>
+      <div class="comment" id="comment">
+        <CommentContent
+          @fullScreenEvent="fullScreenEvent"
+          :list="commentList"
+          :post_id="query.postId"
+          @seletcItem="seletcItem"
+        />
       </div>
     </div>
   </div>
@@ -28,27 +41,61 @@ import Header from "@/components/header/Header.vue";
 import Button from "@/components/button/Button.vue";
 import LeftBar from "@/components/leftBar/LeftBar.vue";
 import CommentContent from "@/components/commentContent/CommentContent.vue";
+import TimeDiff from "@/components/timeDiff/TimeDiff.vue";
 import { fullScreenMixin } from "@/mixins/mixins";
+import { getLatestCommentList } from "@/api/zhuanlan/zhuanlan";
 export default {
-  components: { Header, Button, CommentContent,LeftBar },
+  components: { Header, Button, CommentContent, LeftBar, TimeDiff },
   mixins: [fullScreenMixin],
-  props:{
-      detail:{
-          type:Object,
-          default:{}
-      }
+  props: {
+    detail: {
+      type: Object,
+      default: {},
+    },
   },
   data() {
     return {
       commentValue: "",
       isReceive: false,
+      isLoading: false,
+      commentList: [],
+      query: {
+        postId: null,
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.query.postId = this.$route.query.post_id;
+    this.seletcItem();
+    if (this.$route.query.isToComment) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.goComment("#comment");
+        }, 200);
+      });
+    }
+  },
 
-  methods: {},
+  methods: {
+    goComment(id) {
+      document.querySelector(id).scrollIntoView(true);
+      let comment = this.$el.querySelector(id);
+      console.log(comment);
+      document.body.scrollTop = comment.offsetTop;
+    },
+    async seletcItem() {
+      try {
+        this.isLoading = true;
+        const res = await getLatestCommentList(this.query);
+        this.commentList = res.list;
+        this.isLoading = false;
+      } catch (error) {}
+    },
+  },
 };
 </script>
 <style lang='scss' scoped>
@@ -66,7 +113,6 @@ export default {
     background-color: #ffffff;
     padding: 0.6rem;
     position: relative;
-    height: 100%;
 
     .title {
       font-size: 0.22rem;
@@ -99,7 +145,6 @@ export default {
     .comment {
       margin-top: 0.3rem;
       border-top: 1px solid #e8e8e8;
-
     }
   }
 }
