@@ -47,11 +47,6 @@
     </div>
   </div>
 </template>
-      <!-- <MainContent :list="infos" v-if="tabIndex == 0" />
-      <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" /> -->
-    </div>
-  </div>
-</template>
 
 <script>
 import Navigation from "@/components/navigation/Navigation.vue";
@@ -176,6 +171,8 @@ export default {
         }
       }
       .right {
+        height: 70vh;
+        overflow: auto;
         padding: 0rem 0.2rem 0.2rem 0.2rem;
         background-color: #ffffff;
       }

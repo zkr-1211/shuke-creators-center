@@ -435,9 +435,13 @@ export default {
 }
 .dialog-footer {
   line-height: 0;
+
 }
 ::v-deep .el-textarea__inner {
   resize: none;
+}
+.dialog{
+  border-radius: 50%;
 }
 ::v-deep .el-dialog__body {
   max-height: 5rem !important;

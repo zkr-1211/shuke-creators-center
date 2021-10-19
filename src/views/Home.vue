@@ -132,7 +132,7 @@
           </div>
         </el-aside>
         <el-main>
-          <keep-alive exclude="Detail">
+          <keep-alive>
             <router-view />
           </keep-alive>
         </el-main>
@@ -258,6 +258,7 @@
 
 <script>
 import HelloWorld from "@/components/HelloWorld.vue";
+import 'element-ui/lib/theme-chalk/display.css';
 import Header from "@/components/header/Header.vue";
 import { fullScreenMixin } from "@/mixins/mixins";
 export default {
@@ -393,7 +394,7 @@ export default {
   background-color: #fff;
   color: #333;
   width: 2.56rem !important;
-  height: 9.8rem;
+  height: 100vh;
   overflow: hidden;
   // margin-right: 2.56rem !important;
   .tac {
@@ -427,7 +428,7 @@ export default {
 }
 
 .el-main {
-  height: 95vh;
+  height: 102vh;
   margin-left: 0.2rem;
   overflow-y: auto;
   overflow-x: hidden;

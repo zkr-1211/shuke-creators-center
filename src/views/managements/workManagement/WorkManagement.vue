@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <div class="content">
+    <div class="content" v-infinite-scroll="load" style="overflow:auto">
       <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
       <el-skeleton :rows="6" animated v-if="isLoading" />
       <template v-else>
@@ -74,6 +74,9 @@ export default {
   },
 
   methods: {
+    load() {
+      console.log("111")
+    },
     //专栏
     async getMyColumnList() {
       try {

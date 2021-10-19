@@ -52,12 +52,16 @@ export default {
       type: Object,
       default: {},
     },
+    isLoading: {
+      type: Boolean,
+    },
   },
+
   data() {
     return {
       commentValue: "",
       isReceive: false,
-      isLoading: false,
+      isLoading1: false,
       commentList: [],
       query: {
         postId: null,
@@ -67,8 +71,10 @@ export default {
     };
   },
   computed: {},
-
+  watch: {
+  },
   mounted() {
+    console.log("this.isLoading", this.isLoading)
     this.query.postId = this.$route.query.post_id;
     this.seletcItem();
     if (this.$route.query.isToComment) {
@@ -89,10 +95,10 @@ export default {
     },
     async seletcItem() {
       try {
-        this.isLoading = true;
+        // this.isLoading = true;
         const res = await getLatestCommentList(this.query);
         this.commentList = res.list;
-        this.isLoading = false;
+        // this.isLoading = false;
       } catch (error) {}
     },
   },

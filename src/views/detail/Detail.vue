@@ -1,12 +1,26 @@
 <!--  -->
 <template>
   <div class="body" v-if="detail">
-    <Detail :detail="detail">
+    <Detail :detail="detail" :isLoading="isLoading">
       <div class="content" v-if="detail.posts_type == '0'">
-        <ImgContent :imgList="detail.contents" :isDynaic="true" />
+        <ImgContent :imgList="detail.contents" :isDynaic="true" v-if="detail.contents[1].type != 'video'" />
+
+        <video
+          controls="controls" 
+          :poster="detail.contents[0].value"
+          v-if="detail.contents[1].type == 'video'"
+          style="width:100%;height:50vh"
+        >
+          <source :src="detail.contents[1].value" />
+        </video>
       </div>
+
       <div class="content" v-if="detail.posts_type == '1'">
-        <div v-for="(item, index) in detail.contents" :key="index" class="content-main">
+        <div
+          v-for="(item, index) in detail.contents"
+          :key="index"
+          class="content-main"
+        >
           <div v-if="item.type != 'img' && item.type != 'br'">
             <span user-select="true"> {{ item.value }}</span>
           </div>
@@ -16,7 +30,6 @@
             <img style="width: 100%" :src="item.value" mode="widthFix" />
           </template>
         </div>
-
       </div>
     </Detail>
   </div>
@@ -31,6 +44,7 @@ export default {
   data() {
     return {
       detail: null,
+      isLoading: false,
     };
   },
   computed: {},
@@ -42,11 +56,16 @@ export default {
 
   methods: {
     async getDetail() {
-      const res = await getDetail(this.post_id);
-      this.detail = res;
-      console.log("res", res)
-      if (res.posts_type == 1) {
-        this.detail.contents.splice(0, 1);
+      try {
+        this.isLoading = true;
+        const res = await getDetail(this.post_id);
+        this.detail = res;
+        if (res.posts_type == 1) {
+          this.detail.contents.splice(0, 1);
+        }
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
       }
     },
   },

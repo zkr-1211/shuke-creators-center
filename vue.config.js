@@ -23,6 +23,7 @@ module.exports = {
     proxy: {     // string | Object 解决跨域问题
       '/zhuanlan': {
         target: 'https://apis.shukeapp.net',
+        // target: 'https://superclass-dev.mdzz.gs',
         changeOrigin: true,
         ws: true,
         // pathRewrite: {
