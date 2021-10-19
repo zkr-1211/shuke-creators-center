@@ -12,11 +12,8 @@
           <div class="time-name">
             <span>
               {{ detail.created_at.substr(5, 11) }} ·
-              {{ detail.nickname }}</span
-            >
-            <span v-if="detail.topic_title"
-              >话题#{{ detail.topic_title }}#</span
-            >
+              {{ detail.nickname }}</span>
+            <span v-if="detail.topic_title">话题#{{ detail.topic_title }}#</span>
           </div>
           <div class="view-number">浏览量{{ detail.view_number }}</div>
         </div>
@@ -25,12 +22,8 @@
         </div>
       </template>
       <div class="comment" id="comment">
-        <CommentContent
-          @fullScreenEvent="fullScreenEvent"
-          :list="commentList"
-          :post_id="query.postId"
-          @seletcItem="seletcItem"
-        />
+        <CommentContent @fullScreenEvent="fullScreenEvent" :list="commentList" :post_id="queryComment.postId" @seletcItem="seletcItem" />
+        <div class="loadMore" @click="loadMore" v-if="commentList.length>=10">{{textTip}}</div>
       </div>
     </div>
   </div>
@@ -42,11 +35,11 @@ import Button from "@/components/button/Button.vue";
 import LeftBar from "@/components/leftBar/LeftBar.vue";
 import CommentContent from "@/components/commentContent/CommentContent.vue";
 import TimeDiff from "@/components/timeDiff/TimeDiff.vue";
-import { fullScreenMixin } from "@/mixins/mixins";
+import { fullScreenMixin,loadMoreComment } from "@/mixins/mixins";
 import { getLatestCommentList } from "@/api/zhuanlan/zhuanlan";
 export default {
   components: { Header, Button, CommentContent, LeftBar, TimeDiff },
-  mixins: [fullScreenMixin],
+  mixins: [fullScreenMixin,loadMoreComment],
   props: {
     detail: {
       type: Object,
@@ -56,14 +49,13 @@ export default {
       type: Boolean,
     },
   },
-
   data() {
     return {
       commentValue: "",
       isReceive: false,
       isLoading1: false,
       commentList: [],
-      query: {
+      queryComment: {
         postId: null,
         pageNum: 1,
         pageSize: 10,
@@ -71,11 +63,9 @@ export default {
     };
   },
   computed: {},
-  watch: {
-  },
+  watch: {},
   mounted() {
-    console.log("this.isLoading", this.isLoading)
-    this.query.postId = this.$route.query.post_id;
+    this.queryComment.postId = this.$route.query.post_id;
     this.seletcItem();
     if (this.$route.query.isToComment) {
       this.$nextTick(() => {
@@ -85,7 +75,6 @@ export default {
       });
     }
   },
-
   methods: {
     goComment(id) {
       document.querySelector(id).scrollIntoView(true);
@@ -95,10 +84,12 @@ export default {
     },
     async seletcItem() {
       try {
-        // this.isLoading = true;
-        const res = await getLatestCommentList(this.query);
+        this.queryComment.pageNum = 1;
+        const res = await getLatestCommentList(this.queryComment);
         this.commentList = res.list;
-        // this.isLoading = false;
+        if (res.paginateInfo.hasNext) {
+          this.textTip = "查看更多";
+        }
       } catch (error) {}
     },
   },
@@ -151,6 +142,12 @@ export default {
     .comment {
       margin-top: 0.3rem;
       border-top: 1px solid #e8e8e8;
+      .loadMore {
+        margin-top: 0.3rem;
+        cursor: pointer;
+        font-size: 0.14rem;
+        text-align: center;
+      }
     }
   }
 }

@@ -9,7 +9,7 @@
           controls="controls" 
           :poster="detail.contents[0].value"
           v-if="detail.contents[1].type == 'video'"
-          style="width:100%;height:50vh"
+          style="width:100%;height:40vh"
         >
           <source :src="detail.contents[1].value" />
         </video>

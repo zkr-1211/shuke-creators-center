@@ -3,26 +3,10 @@
   <div class="body">
     <div class="send-comment">
       <div class="textarea" @click="isOneCreate = true">
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="请输入内容"
-          v-model="commentValue"
-        >
+        <el-input type="textarea" autosize placeholder="请输入内容" v-model="commentValue">
         </el-input>
-        <Button
-          v-if="commentValue.length <= 0"
-          name="评论"
-          class="Button"
-          :background="commentValue.length ? '#2a77ff' : '#888888'"
-        />
-        <Button
-          v-else
-          @click.native="createComment"
-          name="评论"
-          class="Button"
-          :background="commentValue.length ? '#2a77ff' : '#888888'"
-        />
+        <Button v-if="commentValue.length <= 0" name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
+        <Button v-else @click.native="createComment" name="评论" class="Button" :background="commentValue.length ? '#2a77ff' : '#888888'" />
       </div>
     </div>
     <div class="comment-title">评论{{ list1.length }}</div>
@@ -47,10 +31,7 @@
             </template>
           </div>
           <div class="message-right">
-            <div
-              class="like"
-              @click="likeComment(item.comment_id, item.is_like)"
-            >
+            <div class="like" @click="likeComment(item.comment_id, item.is_like)">
               {{ item.like_number }} 点赞
             </div>
             <div class="delete" @click="deleteComment(item.comment_id)">
@@ -69,10 +50,7 @@
               </el-dropdown-menu>
             </el-dropdown>
 
-            <div
-              class="childerComment"
-              @click="getChildComment(item.comment_id)"
-            >
+            <div class="childerComment" @click="getChildComment(item.comment_id)">
               共{{ item.comment_number }}条回复
             </div>
           </div>
@@ -93,15 +71,12 @@
           </div>
           <div class="message">
             <div class="message-left">
-              <span
-                @click="
+              <span @click="
                   receive(
                     getChildCommentList.comment_id,
                     getChildCommentList.nickname
                   )
-                "
-                >回复</span
-              >
+                ">回复</span>
               <span>·</span>
               <template v-if="getChildCommentList.created_at">
                 <TimeDiff :date="getChildCommentList.created_at" />
@@ -112,10 +87,7 @@
             </div>
             <div class="message-right">
               <div class="like">{{ getChildCommentList.like_number }} 点赞</div>
-              <div
-                class="delete"
-                @click="deleteComment(getChildCommentList.comment_id)"
-              >
+              <div class="delete" @click="deleteComment(getChildCommentList.comment_id)">
                 删除
               </div>
               <el-dropdown trigger="click">
@@ -142,10 +114,7 @@
           </div>
           <div class="item-content">
             <div class="com-content">
-              <div
-                class="content_new_item_comment_child"
-                v-if="item1.replyTo.user_id != null"
-              >
+              <div class="content_new_item_comment_child" v-if="item1.replyTo.user_id != null">
                 @{{ item1.replyTo.nickname }}:
                 {{ item1.replyTo.contents }}
               </div>
@@ -153,12 +122,9 @@
             </div>
             <div class="message">
               <div class="message-left">
-                <span
-                  @click="
+                <span @click="
                     receive(item1.comment_id, item1.nickname, item1.comment_id)
-                  "
-                  >回复</span
-                >
+                  ">回复</span>
                 <span>·</span>
                 <template v-if="item1.created_at">
                   <TimeDiff :date="item1.created_at" />
@@ -190,19 +156,8 @@
         </div>
       </template>
     </el-dialog>
-    <el-dialog
-      width="30%"
-      :title="receiveTitle"
-      top="30vh"
-      :visible.sync="innerVisible"
-    >
-      <el-input
-        autofocus
-        type="textarea"
-        autosize
-        placeholder="请输入内容"
-        v-model="receiveValue"
-      >
+    <el-dialog width="30%" :title="receiveTitle" top="30vh" :visible.sync="innerVisible">
+      <el-input autofocus type="textarea" autosize placeholder="请输入内容" v-model="receiveValue">
       </el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="innerVisible = false">取 消</el-button>
@@ -244,7 +199,7 @@ export default {
       query: {
         commentId: null,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 50,
       },
       outerVisible: false,
       innerVisible: false,
@@ -330,6 +285,8 @@ export default {
         }
       });
       this.childComment = this.childComment.concat(res.list).reverse();
+      // this.childComment = res.list;
+
       console.log(
         "this.childComment",
         this.childComment,
@@ -384,6 +341,7 @@ export default {
         }
       } catch (error) {}
     },
+
     toReceive(comment_id, nickname) {
       this.isOneCreate = false;
       this.childCommentSend = false;
@@ -435,15 +393,15 @@ export default {
 }
 .dialog-footer {
   line-height: 0;
-
 }
 ::v-deep .el-textarea__inner {
   resize: none;
 }
-.dialog{
+.dialog {
   border-radius: 50%;
 }
 ::v-deep .el-dialog__body {
+  // height: 2rem;
   max-height: 5rem !important;
   overflow: auto;
 }
@@ -456,7 +414,6 @@ export default {
   height: 0.7rem;
 }
 .item1 {
-  // width: 50%;
   margin-top: 0.14rem;
 }
 .item2 {

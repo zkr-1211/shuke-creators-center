@@ -3,11 +3,8 @@
   <div class="body">
     <template v-for="item in list">
       <!-- 动态 -->
-      <div class="content-item" @click="toDetail(item.post_id)">
-        <div
-          :class="item.post_id == post_id1 ? 'bar' : ''"
-          v-if="isManage"
-        ></div>
+      <div class="content-item" @click="toDetail(item.post_id)" :key="item.post_id">
+        <div :class="item.post_id == post_id1 ? 'bar' : ''" v-if="isManage"></div>
         <div class="time" v-if="!isManage">
           <span v-if="item.created_at">
             <TimeDiff :date="item.created_at" />
@@ -19,16 +16,8 @@
         </div>
         <ImgContent :imgList="[item.contents[0]]" v-if="item.posts_type == 1" />
         <template v-if="item.contents[1]">
-          <ImgContent
-            :imgList="item.contents"
-            :isDynaic="true"
-            v-if="item.posts_type == 0 && item.contents[1].type != 'video'"
-          />
-          <video
-            controls="controls"
-            :poster="item.contents[0].value"
-            v-if="item.contents[1].type == 'video'"
-          >
+          <ImgContent :imgList="item.contents" :isDynaic="true" v-if="item.posts_type == 0 && item.contents[1].type != 'video'" />
+          <video controls="controls" :poster="item.contents[0].value" v-if="item.contents[1].type == 'video'">
             <source :src="item.contents[1].value" />
           </video>
         </template>
@@ -43,17 +32,13 @@
           </div>
           <div class="bottom-content-right">
             <div class="look-comment" v-if="!isManage" @click.stop="toComment(item.post_id)">查看评论</div>
-            <div
-              class="delete-work"
-              v-if="!isManage"
-              @click.stop="deletePost(item.post_id)"
-            >
+            <div class="delete-work" v-if="!isManage" @click.stop="deletePost(item.post_id)">
               删除作品
             </div>
           </div>
         </div>
       </div>
-     
+
       <!-- 专栏 -->
       <!-- <router-link :to="{path:'/detail',query:{post_id:item.post_id}}" :key="item.post_id+1">
         <div class="content-item" v-if="tabIndex == 2">
@@ -140,12 +125,12 @@ export default {
     },
     toComment(post_id) {
       this.$router.push({
-          path: "/detail",
-          query: {
-            post_id,
-            isToComment:true
-          },
-        });
+        path: "/detail",
+        query: {
+          post_id,
+          isToComment: true,
+        },
+      });
     },
     toDetail(post_id) {
       if (!this.isManage) {
@@ -193,6 +178,8 @@ export default {
       video {
         width: 2.85rem;
         height: 1.6rem;
+        object-fit: cover;
+        border-radius: 0.08rem;
       }
       .time {
         position: absolute;

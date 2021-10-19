@@ -15,30 +15,21 @@
             <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
               <div class="left">
                 <div class="item">
-                  <MainContent
-                    :list="zhuanlanList"
-                    :isManage="true"
-                    v-if="tabIndex == 1"
-                    @seletcItem="seletcItem"
-                    :post_id="post_id"
-                  />
-                  <MainContent
-                    :list="infos"
-                    :isManage="true"
-                    @seletcItem="seletcItem"
-                    :post_id="post_id"
-                    v-else
-                  />
+                  <template v-if="tabIndex == 0">
+                    <MainContent :list="infos" :isManage="true" @seletcItem="seletcItem" :post_id="post_id" />
+                    <div class="loadMore" @click="loadMore1" v-if="infos.length>=1">{{textTip1}}</div>
+                  </template>
+                  <template v-else>
+                    <MainContent :list="zhuanlanList" :isManage="true" @seletcItem="seletcItem" :post_id="post_id" />
+                    <div class="loadMore" @click="loadMore2" v-if="zhuanlanList.length>=1">{{textTip2}}</div>
+                  </template>
                 </div>
               </div>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
               <div class="right">
-                <CommentContent
-                  :list="commentList"
-                  :post_id="post_id"
-                  @seletcItem="seletcItem"
-                />
+                <CommentContent :list="commentList" :post_id="post_id" @seletcItem="seletcItem" />
+                <div class="loadMore" @click="loadMore" v-if="commentList.length>=10">{{textTip}}</div>
               </div>
             </el-col>
           </el-row>
@@ -53,6 +44,7 @@ import Navigation from "@/components/navigation/Navigation.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
 import MainContent from "@/components/mainContent/MainContent.vue";
 import CommentContent from "@/components/commentContent/CommentContent.vue";
+import { loadMoreComment, loadMorePost } from "@/mixins/mixins";
 import {
   getMyColumnList,
   getMyNewsList,
@@ -66,6 +58,7 @@ export default {
     MainContent,
     CommentContent,
   },
+  mixins: [loadMoreComment, loadMorePost],
   data() {
     return {
       zhuanlanList: [],
@@ -76,21 +69,6 @@ export default {
       tabIndex: 0,
       post_id: null,
       isLoading: false,
-      query1: {
-        userId: 3956,
-        pageNum: 1,
-        pageSize: 10,
-      },
-      query2: {
-        userId: 3956,
-        pageNum: 1,
-        pageSize: 10,
-      },
-      query3: {
-        postId: null,
-        pageNum: 1,
-        pageSize: 10,
-      },
       tabList: [
         {
           title: "动态",
@@ -109,25 +87,31 @@ export default {
   },
 
   methods: {
-    //专栏
-    async getMyColumnList() {
-      try {
-        this.isLoading = true;
-        const res = await getMyColumnList(this.query1);
-        this.zhuanlanList = this.zhuanlanList.concat(res.list);
-        this.zhuanlanTotalNum = res.paginateInfo.totalNum;
-        this.isLoading = false;
-      } catch (error) {}
-    },
     //动态
     async getMyNewsList() {
       try {
         this.isLoading = true;
         const res = await getMyNewsList(this.query2);
-        this.infos = this.infos.concat(res.list);
+        this.infos = res.list;
         this.post_id = this.infos[0].post_id;
         this.infosTotalNum = res.paginateInfo.totalNum;
         this.isLoading = false;
+        if (res.paginateInfo.hasNext) {
+          this.textTip1 = "查看更多";
+        }
+      } catch (error) {}
+    },
+    //专栏
+    async getMyColumnList() {
+      try {
+        this.isLoading = true;
+        const res = await getMyColumnList(this.query1);
+        this.zhuanlanList = res.list;
+        this.zhuanlanTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
+        if (res.paginateInfo.hasNext) {
+          this.textTip2 = "查看更多";
+        }
       } catch (error) {}
     },
 
@@ -136,12 +120,13 @@ export default {
     },
     async seletcItem(post_id) {
       try {
-        // this.isLoading = true;
-        this.query3.postId = post_id * 1;
-        const res = await getLatestCommentList(this.query3);
+        this.queryComment.pageNum = 1;
+        this.queryComment.postId = post_id * 1;
+        const res = await getLatestCommentList(this.queryComment);
         this.commentList = res.list;
-        // this.isLoading = false;
-        console.log("res", res.list);
+        if (res.paginateInfo.hasNext) {
+          this.textTip = "查看更多";
+        }
       } catch (error) {}
     },
   },
@@ -149,6 +134,12 @@ export default {
 </script>
 <style lang='scss' scoped>
 .body {
+  .loadMore {
+    margin-top: 0.3rem;
+    cursor: pointer;
+    font-size: 0.14rem;
+    text-align: center;
+  }
   .content {
     // max-height: 92vh;
     // overflow: auto;

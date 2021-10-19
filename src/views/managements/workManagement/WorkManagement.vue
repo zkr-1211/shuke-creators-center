@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <div class="content" v-infinite-scroll="load" style="overflow:auto">
+    <div class="content">
       <Navigation :tabList="tabList" @tabsIndex="tabsIndex" />
       <el-skeleton :rows="6" animated v-if="isLoading" />
       <template v-else>
@@ -10,8 +10,14 @@
         <div class="total-dynaic" v-if="tabIndex == 1">
           共{{ zhuanlanList.length }}条专栏
         </div>
-        <MainContent :list="infos" v-if="tabIndex == 0" />
-        <MainContent :list="zhuanlanList" v-else-if="tabIndex == 1" />
+        <template v-if="tabIndex == 0">
+          <MainContent :list="infos" />
+          <div class="loadMore" @click="loadMore1" v-if="infos.length>=1">{{textTip1}}</div>
+        </template>
+        <template v-else-if="tabIndex == 1">
+          <MainContent :list="zhuanlanList" />
+          <div class="loadMore" @click="loadMore2" v-if="zhuanlanList.length>=1">{{textTip2}}</div>
+        </template>
       </template>
     </div>
   </div>
@@ -21,6 +27,7 @@
 import Navigation from "@/components/navigation/Navigation.vue";
 import ImgContent from "@/components/imgContent/ImgContent.vue";
 import MainContent from "@/components/mainContent/MainContent.vue";
+import { loadMorePost } from "@/mixins/mixins";
 import {
   getMyColumnList,
   getMyNewsList,
@@ -32,6 +39,7 @@ export default {
     ImgContent,
     MainContent,
   },
+    mixins: [loadMorePost],
   data() {
     return {
       zhuanlanList: [],
@@ -39,16 +47,8 @@ export default {
       zhuanlanTotalNum: 0,
       infosTotalNum: 0,
       tabIndex: 0,
-      query1: {
-        userId: 3956,
-        pageNum: 1,
-        pageSize: 10,
-      },
-      query2: {
-        userId: 3956,
-        pageNum: 1,
-        pageSize: 10,
-      },
+      textTip1: "查看更多",
+      textTip2: "查看更多",
       isLoading: false,
       tabList: [
         {
@@ -74,27 +74,30 @@ export default {
   },
 
   methods: {
-    load() {
-      console.log("111")
+    //动态
+    async getMyNewsList() {
+      try {
+        this.isLoading = true;
+        const res = await getMyNewsList(this.query2);
+        this.infos = res.list;
+        this.infosTotalNum = res.paginateInfo.totalNum;
+        this.isLoading = false;
+        if (res.paginateInfo.hasNext) {
+          this.textTip1 = "查看更多";
+        }
+      } catch (error) {}
     },
     //专栏
     async getMyColumnList() {
       try {
         this.isLoading = true;
         const res = await getMyColumnList(this.query1);
-        this.zhuanlanList = this.zhuanlanList.concat(res.list);
+        this.zhuanlanList = res.list;
         this.zhuanlanTotalNum = res.paginateInfo.totalNum;
         this.isLoading = false;
-      } catch (error) {}
-    },
-    //动态
-    async getMyNewsList() {
-      try {
-        this.isLoading = true;
-        const res = await getMyNewsList(this.query2);
-        this.infos = this.infos.concat(res.list);
-        this.infosTotalNum = res.paginateInfo.totalNum;
-        this.isLoading = false;
+        if (res.paginateInfo.hasNext) {
+          this.textTip2 = "查看更多";
+        }
       } catch (error) {}
     },
 
@@ -105,6 +108,12 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.loadMore {
+  margin-top: 0.3rem;
+  cursor: pointer;
+  font-size: 0.14rem;
+  text-align: center;
+}
 .content {
   min-height: 90vh;
   padding: 0.1rem 0.3rem 0.3rem 0.3rem;
