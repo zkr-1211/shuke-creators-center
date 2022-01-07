@@ -11,7 +11,7 @@
           <div class="back-icon"></div>
         </router-link>
         <router-link to="/">
-          <div class="back">返回首页</div>
+          <div class="back">返回首页111</div>
         </router-link>
       </div>
       <div class="select-type">
