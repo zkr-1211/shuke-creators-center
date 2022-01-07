@@ -1,0 +1,11 @@
+<svg id="topbar_notice_history_p" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2a77ff;
+      }
+    </style>
+  </defs>
+  <path id="路径_28673" data-name="路径 28673" class="cls-1" d="M10,20A10,10,0,1,1,20,10,9.958,9.958,0,0,1,10,20ZM10,2.222A7.778,7.778,0,1,0,17.778,10,7.73,7.73,0,0,0,10,2.222Z"/>
+  <path id="路径_28674" data-name="路径 28674" class="cls-1" d="M459.043,237.923l-3.932-3.932v-6.435h2.383v5.481l3.217,3.217Z" transform="translate(-446.45 -223.412)"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.998" height="23.998" viewBox="0 0 23.998 23.998">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(255,255,255,0);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="leftbar_home_s" transform="translate(2 2)">
+    <path id="路径_280" data-name="路径 280" class="cls-1" d="M0,0H24V24H0Z" transform="translate(-2 -2)"/>
+    <g id="首页" transform="translate(-0.86 -0.86)">
+      <path id="联合_1" data-name="联合 1" class="cls-2" d="M8.882,21.912H4.955a2,2,0,0,1-2-2V10.849H0L10.859,0,21.717,10.849H18.762v9.063a2,2,0,0,1-2,2H12.835V15.826H8.883v6.085h0Z"/>
+    </g>
+  </g>
+</svg>

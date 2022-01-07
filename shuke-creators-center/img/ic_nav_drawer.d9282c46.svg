@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #525252;
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #666;
+      }
+    </style>
+  </defs>
+  <g id="ic_nav_drawer" transform="translate(-1817 -13)">
+    <rect id="矩形_1782" data-name="矩形 1782" class="cls-1" width="36" height="36" transform="translate(1817 13)"/>
+    <rect id="矩形_19807" data-name="矩形 19807" class="cls-2" width="20" height="3" transform="translate(1825 21)"/>
+    <rect id="矩形_19808" data-name="矩形 19808" class="cls-2" width="20" height="3" transform="translate(1825 29)"/>
+    <rect id="矩形_19809" data-name="矩形 19809" class="cls-2" width="20" height="3" transform="translate(1825 37)"/>
+  </g>
+</svg>

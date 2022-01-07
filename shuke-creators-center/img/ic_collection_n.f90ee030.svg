@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #222;
+      }
+    </style>
+  </defs>
+  <g id="ic_collection_n" transform="translate(-489 -349)">
+    <circle id="椭圆_283" data-name="椭圆 283" class="cls-1" cx="20" cy="20" r="20" transform="translate(489 349)"/>
+    <path id="多边形_2" data-name="多边形 2" class="cls-2" d="M8.176,1.2a1,1,0,0,1,1.648,0l2.3,3.352a1,1,0,0,0,.545.394l3.912,1.137a1,1,0,0,1,.51,1.574l-2.486,3.2a1,1,0,0,0-.21.644l.12,4.043a1,1,0,0,1-1.334.972l-3.85-1.368a1,1,0,0,0-.67,0L4.816,16.51a1,1,0,0,1-1.334-.972L3.6,11.5a1,1,0,0,0-.21-.644L.9,7.657a1,1,0,0,1,.51-1.574L5.327,4.946a1,1,0,0,0,.545-.394Z" transform="translate(500 360)"/>
+  </g>
+</svg>
